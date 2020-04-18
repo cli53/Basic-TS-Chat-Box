@@ -1,20 +1,24 @@
 import React from "react";
 import { useFetch } from "../../utils";
 import PropTypes from "prop-types";
+import ChatInput from "../chat_input";
+import ChatMessages from "../chat_messages";
 
-const ChatContainer = props => {
+const ChatContainer = ({ user }) => {
   const url = "https://api.jsonbin.io/b/5e9a6b452940c704e1da618a";
-  const { data, loading } = useFetch(url);
-  console.log("state", data, loading);
+  const { data: messages, isLoading } = useFetch(url);
+  console.log("state", messages, isLoading);
   return (
     <div>
       <h1>Chat Container</h1>
+      <ChatMessages messages={messages} isLoading={isLoading} user={user} />
+      <ChatInput />
     </div>
   );
 };
 
 ChatContainer.propTypes = {
-  props: PropTypes.object
+  user: PropTypes.string
 };
 
 export default ChatContainer;
