@@ -1,0 +1,18 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["react,react-hooks"],
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-indent": 0,
+    "react/jsx-indent-props": 1,
+    "react/jsx-tag-spacing": 1,
+    "react/jsx-curly-spacing": 1,
+    "react/jsx-equals-spacing": 1,
+    "react/jsx-boolean-value": 1,
+    "react/self-closing-comp": 1,
+    "import/no-duplicates": 1,
+    "no-console": 1,
+    "no-trailing-spaces": 1
+  }
+}
