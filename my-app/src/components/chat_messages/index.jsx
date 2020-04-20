@@ -1,9 +1,19 @@
 import React from "react";
-import { map, isEmpty } from "lodash";
 import PropTypes from "prop-types";
+import { map, filter, isEmpty} from "lodash";
+import {getTimeStamp} from './utils'
 import LoadingIndicator from "../chat_loading";
 
 // TODO: implement scroll to bottom functionality
+// TODO: implement rendering emojis
+// TODO: calculate time
+// TODO: Deleted messages
+  // if they have the same message ID, remove the originally message
+  // filter out deleted messages
+  // store them in a  object
+  // loop the
+// TODO: Updated messages
+
 const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
   if (isLoading) return <LoadingIndicator />;
   const messageTypes = {
@@ -14,51 +24,55 @@ const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
     DELETE: "delete"
   };
   if (!isLoading && !isEmpty(messages)) {
+
     const formattedMessages = map(
-      messages,
-   
+      (messages),
       ({
         delta,
+        payload,
         payload: {
           type,
           user: { id: userId, user_name, display_name } = {},
           message: { id: messageId = 0, text } = {}
         }
-      },
-      key,
-      messagesArr) => {
-        if (type === messageTypes.MESSAGE || type === messageTypes.UPDATE) {
-          return { time: delta, display_name, text, messageId, userId, key};
+      }, key) => {
+        const time = getTimeStamp(delta)
+        console.log('time', time)
+        if (type === messageTypes.MESSAGE) {
+          return { time, display_name, text, messageId, userId, key};
         } else if (type === messageTypes.CONNECT) {
           return {
-            time: delta,
+            time,
             display_name,
             text: `${display_name} has joined the chat`,
-            userId
+            userId,
+            key
           };
         } else if (type === messageTypes.DISCONNECT) {
           return {
-            time: delta,
+            time,
             display_name,
             text: `${display_name} has left the chat`,
             userId,
+            key
           };
-        } else if(type === messageTypes.DELETE) {
-            const handleDelete(message)
-            // messagesArr.filter();
+        }
+         else if(type === messageTypes.DELETE) {
+          return {messageId, time, text: 'deleted', key}
+        } else if (type === messageTypes.UPDATE) {
+          return {time, payload, key}
         }
       }
     );
     return map(formattedMessages, message => {
-      console.log("message", message);
       let isUser =
         !isEmpty(message) &&
         message.userId === !isEmpty(message) &&
         loginUser.id;
-      let renderName = message.display_name;
+      let renderName = message?.display_name;
       return (
         <div
-          key={message.id}
+          key={message.key}
           className="chat-bubble-row"
           style={{ flexDirection: isUser ? "row-reverse" : "row" }}
         >
@@ -69,7 +83,7 @@ const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
             style={isUser ? { marginLeft: "15px" } : { marginRight: "15px" }}
           /> */}
           <div className={`chat-bubble`} key={message.id}>
-            {renderName}
+            {renderName} {message?.time}
             <div
               className="message"
               style={{ color: isUser ? "#FFF" : "#2D313F" }}
