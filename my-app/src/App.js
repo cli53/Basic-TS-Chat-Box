@@ -4,6 +4,9 @@ import "./App.css";
 import ChatContainer from "./components/chat_container";
 
 function App() {
+  const user = {
+    id: 1
+  };
   return (
     <div className="App">
       <header className="App-header">
@@ -20,7 +23,7 @@ function App() {
           Learn React
         </a>
       </header>
-      <ChatContainer />
+      <ChatContainer user={user} />
     </div>
   );
 }

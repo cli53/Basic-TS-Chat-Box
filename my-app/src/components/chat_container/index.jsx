@@ -9,7 +9,7 @@ const ChatContainer = ({ user }) => {
   const { data: messages, isLoading } = useFetch(url);
   return (
     <div>
-      <h1>Chat Container</h1>
+      <h1>Stuck at Home Group Chat</h1>
       <ChatMessages messages={messages} isLoading={isLoading} user={user} />
       <ChatInput />
     </div>

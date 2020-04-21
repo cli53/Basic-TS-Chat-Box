@@ -6,13 +6,6 @@ import LoadingIndicator from "../chat_loading";
 
 // TODO: implement scroll to bottom functionality
 // TODO: implement rendering emojis
-// TODO: calculate time
-// TODO: Deleted messages
-// if they have the same message ID, remove the originally message
-// filter out deleted messages
-// store them in a  object
-// loop the
-// TODO: Updated messages
 
 const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
   if (isLoading) return <LoadingIndicator />;
@@ -30,10 +23,9 @@ const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
       (
         {
           delta,
-          payload,
           payload: {
             type,
-            user: { id: userId, user_name, display_name } = {},
+            user: { id: userId, display_name } = {},
             message: { id: messageId = 0, text } = {}
           }
         },
