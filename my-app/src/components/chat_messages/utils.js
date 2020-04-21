@@ -1,7 +1,7 @@
 // TODO: implement scroll to bottom functionality
 // TODO: implement rendering emojis
 
-import { includes, forEach, set } from "lodash";
+import { includes, forEach, set, map } from "lodash";
 
 const COLLECTION = {
   deletedIds: {},
@@ -93,9 +93,8 @@ const performUpdates = (obj, idx) => {
 
   if (messageId) {
     let indexToUpdate = COLLECTION.messageIds[messageId];
+    // TODO: optionally to pass it with a time stamp
     replaceText(indexToUpdate, obj.payload.message.text);
-    // COLLECTION.messageList[indexToUpdate].payload.message.text =
-    //   obj.payload.message.text;
 
     // delete the update message marker
     delete COLLECTION.messageList[idx];
@@ -106,6 +105,47 @@ const performUpdates = (obj, idx) => {
       `Updating name to ${obj.payload.user.display_name}`
     );
   }
+};
+
+export const formatMessages = filteredMessages => {
+  return map(
+    filteredMessages,
+    (
+      {
+        delta,
+        payload: {
+          type,
+          user: { id: userId, display_name } = {},
+          message: { id: messageId = null, text } = {}
+        }
+      },
+      key
+    ) => {
+      const time = getTimeStamp(delta);
+      const initials = `${display_name[0]}${
+        display_name[display_name.length - 1]
+      }`;
+      const renderedMessage = {
+        display_name,
+        key,
+        messageId,
+        text,
+        time,
+        userId,
+        avatar: initials
+      };
+
+      if (type === messageTypes.MESSAGE || type === messageTypes.UPDATE) {
+        return renderedMessage;
+      } else if (type === messageTypes.CONNECT) {
+        renderedMessage.text = `${display_name} has joined the chat`;
+        return renderedMessage;
+      } else if (type === messageTypes.DISCONNECT) {
+        renderedMessage.text = `${display_name} has left the chat`;
+        return renderedMessage;
+      }
+    }
+  );
 };
 
 /**
@@ -132,5 +172,6 @@ export const interleavingMessages = messages => {
       performUpdates(obj, idx);
     }
   });
-  return Object.values(COLLECTION.messageList);
+  const interleavedMessages = Object.values(COLLECTION.messageList);
+  return formatMessages(interleavedMessages);
 };
