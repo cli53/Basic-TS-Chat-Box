@@ -1,17 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { map, filter, isEmpty} from "lodash";
-import {getTimeStamp} from './utils'
+import { map, filter, isEmpty } from "lodash";
+import { getTimeStamp, interleavingMessages } from "./utils";
 import LoadingIndicator from "../chat_loading";
 
 // TODO: implement scroll to bottom functionality
 // TODO: implement rendering emojis
 // TODO: calculate time
 // TODO: Deleted messages
-  // if they have the same message ID, remove the originally message
-  // filter out deleted messages
-  // store them in a  object
-  // loop the
+// if they have the same message ID, remove the originally message
+// filter out deleted messages
+// store them in a  object
+// loop the
 // TODO: Updated messages
 
 const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
@@ -24,22 +24,24 @@ const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
     DELETE: "delete"
   };
   if (!isLoading && !isEmpty(messages)) {
-
+    const filteredMessages = interleavingMessages(messages);
     const formattedMessages = map(
-      (messages),
-      ({
-        delta,
-        payload,
-        payload: {
-          type,
-          user: { id: userId, user_name, display_name } = {},
-          message: { id: messageId = 0, text } = {}
-        }
-      }, key) => {
-        const time = getTimeStamp(delta)
-        console.log('time', time)
+      filteredMessages,
+      (
+        {
+          delta,
+          payload,
+          payload: {
+            type,
+            user: { id: userId, user_name, display_name } = {},
+            message: { id: messageId = 0, text } = {}
+          }
+        },
+        key
+      ) => {
+        const time = getTimeStamp(delta);
         if (type === messageTypes.MESSAGE) {
-          return { time, display_name, text, messageId, userId, key};
+          return { time, display_name, text, messageId, userId, key };
         } else if (type === messageTypes.CONNECT) {
           return {
             time,
@@ -56,11 +58,10 @@ const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
             userId,
             key
           };
-        }
-         else if(type === messageTypes.DELETE) {
-          return {messageId, time, text: 'deleted', key}
+        } else if (type === messageTypes.DELETE) {
+          return { messageId, time, text: "deleted", key };
         } else if (type === messageTypes.UPDATE) {
-          return {time, payload, key}
+          return { time, payload, key };
         }
       }
     );
