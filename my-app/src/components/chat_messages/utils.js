@@ -95,7 +95,9 @@ const performUpdates = (obj, idx) => {
     let indexToUpdate = COLLECTION.messageIds[messageId];
     // TODO: optionally to pass it with a time stamp
     replaceText(indexToUpdate, obj.payload.message.text);
-
+    console.log("obj.delta", obj);
+    // updates timestamp for editted message
+    COLLECTION.messageList[indexToUpdate].delta = obj.delta;
     // delete the update message marker
     delete COLLECTION.messageList[idx];
   } else {
@@ -134,7 +136,6 @@ export const formatMessages = filteredMessages => {
         userId,
         avatar: initials
       };
-
       if (type === messageTypes.MESSAGE || type === messageTypes.UPDATE) {
         return renderedMessage;
       } else if (type === messageTypes.CONNECT) {
