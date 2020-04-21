@@ -90,7 +90,7 @@ const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
               className="message"
               style={{ color: isUser ? "#FFF" : "#2D313F" }}
             >
-              {message.text}
+              <span>{message.text}</span>
             </div>
           </div>
         </div>
