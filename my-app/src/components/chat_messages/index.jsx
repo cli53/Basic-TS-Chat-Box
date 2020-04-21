@@ -11,30 +11,39 @@ import LoadingIndicator from "../chat_loading";
 
 const DisplayName = styled.header`
   font-weight: 600;
+  margin-bottom: 0.3rem;
 `;
 
 const TimeDetails = styled.p`
   font-size: 0.5rem;
   color: lightgrey;
+  padding: 0 0.5rem;
 `;
 
 const ChatBubble = styled.div`
   height: fit-content;
   width: fit-content;
-  padding: 5px;
+  padding: 0.5rem;
   border-radius: 2%;
   background-color: lightblue;
-  color: black;
+  color: #14171a;
 `;
 
 const Avatar = styled.div`
   border-radius: 50%;
-  height: 75px;
-  width: 75px;
+  height: 50px;
+  width: 50px;
+  font-weight: 700;
+  font-size: 2rem;
+  margin: 1rem 1rem;
+  background-color: aquamarine;
+  color: #043623;
 `;
 
 const ChatRow = styled.section`
   display: flex;
+  align-items: center;
+  flex-direction: ${props => (props.isUser ? "row-reverse" : "row")};
 `;
 
 const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
@@ -43,15 +52,21 @@ const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
   if (!isLoading && !isEmpty(messages)) {
     const formattedMessages = interleavingMessages(messages);
     return map(formattedMessages, message => {
-      let isUser = message.userId === loginUser.id;
-      let renderName = message?.display_name;
+      const isUser = message.userId === loginUser.id;
+      console.log(
+        "loginUser.id",
+        loginUser.id,
+        "message.userId",
+        message.userId,
+        isUser
+      );
       return (
-        <ChatRow className={`chat-row`} key={message.id}>
+        <ChatRow className={`chat-row`} key={message.id} isUser={isUser}>
           <Avatar alt="sender avatar" className="avatar">
             {message.avatar}
           </Avatar>
           <ChatBubble>
-            <DisplayName>{renderName}</DisplayName>
+            <DisplayName>{message.display_name}</DisplayName>
             {message.text}
           </ChatBubble>
           <TimeDetails>{message.time}</TimeDetails>
@@ -59,7 +74,7 @@ const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
       );
     });
   } else {
-    return <h1>messages</h1>;
+    return <h1>Nothing to see here...</h1>;
   }
 };
 
