@@ -81,30 +81,31 @@ export const interleavingMessages = messages => {
 
     const messageId = obj.payload?.message?.id;
     const blackListedMessages =
-      obj.payload.type !== messageTypes.DELETE ||
-      obj.payload.type === messageTypes.UPDATE;
+      obj.payload.type !== messageTypes.DELETE &&
+      obj.payload.type !== messageTypes.UPDATE;
+
     if (messageId && blackListedMessages) {
       storeId(messageId, idx, COLLECTION.messageIds);
     } else if (obj.payload.type === messageTypes.DELETE) {
       performDeletes(obj, idx);
-    } else if (obj.payload.type === messageTypes.UPDATE) {
-      // find the message in messageList
-      const list = Object.values(COLLECTION.messageList);
+    }
+    if (obj.payload.type === messageTypes.UPDATE) {
+      if (messageId) {
+        let indexToUpdate = COLLECTION.messageIds[messageId];
+        COLLECTION.messageList[indexToUpdate].payload.message.text =
+          obj.payload.message.text;
 
-      const userObj = obj.payload?.user;
-      if (!isEmpty(userObj)) {
-        for (let message in list) {
-          if (message.payload?.user.id === userObj.id) {
-            message.payload.user = userObj;
-          }
-        }
+        // delete the update message marker
+        delete COLLECTION.messageList[idx];
+      } else {
+        set(
+          COLLECTION.messageList[idx],
+          "payload.message.text",
+          `Updating name to ${obj.payload.user.display_name}`
+        );
       }
-      // COLLECTION.messageList[messageId];
-      // reassign user
-      // if it's a message, use same logic as delete
-      // find based on Id and replace message
     }
   });
-
+  console.log(COLLECTION.messageList);
   return Object.values(COLLECTION.messageList);
 };

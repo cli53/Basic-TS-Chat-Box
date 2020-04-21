@@ -61,7 +61,8 @@ const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
         } else if (type === messageTypes.DELETE) {
           return { messageId, time, text: "deleted", key };
         } else if (type === messageTypes.UPDATE) {
-          return { time, payload, key };
+          console.log(text);
+          return { time, text, key };
         }
       }
     );
