@@ -1,6 +1,6 @@
 // TODO: implement scroll to bottom functionality
 
-import { forEach, set } from "lodash";
+import { forEach, set, map } from "lodash";
 
 const COLLECTION = {
   deletedIds: {},
@@ -106,6 +106,42 @@ const performUpdates = (obj, idx) => {
   }
 };
 
+const formatMessages = filteredMessages => {
+  return map(
+    filteredMessages,
+    ({
+      delta,
+      payload: {
+        type,
+        user: { id: userId, display_name } = {},
+        message: { id: messageId = null, text } = {}
+      }
+    }) => {
+      const time = getTimeStamp(delta);
+      const initials = `${display_name[0]}${
+        display_name[display_name.length - 1]
+      }`;
+      const renderedMessage = {
+        display_name,
+        messageId,
+        text,
+        time,
+        userId,
+        avatar: initials
+      };
+      if (type === messageTypes.MESSAGE || type === messageTypes.UPDATE) {
+        return renderedMessage;
+      } else if (type === messageTypes.CONNECT) {
+        renderedMessage.text = `${display_name} has joined the chat`;
+        return renderedMessage;
+      } else if (type === messageTypes.DISCONNECT) {
+        renderedMessage.text = `${display_name} has left the chat`;
+        return renderedMessage;
+      }
+    }
+  );
+};
+
 /**
  * @description
  * - stores messages in the collection
@@ -127,9 +163,9 @@ export const interleavingMessages = messages => {
     } else if (obj.payload.type === messageTypes.DELETE) {
       performDeletes(obj, idx);
     } else if (obj.payload.type === messageTypes.UPDATE) {
-      //   performUpdates(obj, idx);
+      performUpdates(obj, idx);
     }
   });
   const interleavedMessages = Object.values(COLLECTION.messageList);
-  return interleavedMessages;
+  return formatMessages(interleavedMessages);
 };
