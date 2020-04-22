@@ -3,7 +3,6 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { map, isEmpty } from "lodash";
 import { interleavingMessages } from "./utils";
-import LoadingIndicator from "../chat_loading";
 
 // TODO: implement scroll to bottom functionality
 // TODO: implement rendering emojis
@@ -47,8 +46,6 @@ const ChatRow = styled.section`
 `;
 
 const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
-  if (isLoading) return <LoadingIndicator />;
-
   if (!isLoading && !isEmpty(messages)) {
     const formattedMessages = interleavingMessages(messages);
     return map(formattedMessages, message => {
