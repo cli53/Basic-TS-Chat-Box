@@ -1,7 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useFetch } from "../../hooks";
-import PropTypes from "prop-types";
+import ChatMessages from "../chat_messages";
+import LoadingIndicator from "../chat_loading";
 
 const ChatTitle = styled.h1`
   font-size: 1.5em;
@@ -11,12 +13,13 @@ const ChatTitle = styled.h1`
 
 const ChatContainer = ({ user }) => {
   const url = "https://api.jsonbin.io/b/5e9a6b452940c704e1da618a";
-  const { data, isLoading } = useFetch(url);
-  console.log("messages", data);
-  if (isLoading) return "LOADING";
+  const { data: messages, isLoading } = useFetch(url);
+  console.log("messages", messages);
+  if (isLoading) return <LoadingIndicator />;
   return (
     <>
       <ChatTitle>Stuck at Home Group Chat</ChatTitle>
+      <ChatMessages messages={messages} isLoading={isLoading} user={user} />
     </>
   );
 };
