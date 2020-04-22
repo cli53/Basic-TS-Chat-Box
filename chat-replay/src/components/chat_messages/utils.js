@@ -1,4 +1,6 @@
-import { forEach, set, includes } from "lodash";
+// TODO: implement scroll to bottom functionality
+
+import { forEach, set } from "lodash";
 
 const COLLECTION = {
   deletedIds: {},
@@ -14,8 +16,21 @@ const messageTypes = {
   DELETE: "delete"
 };
 
-const replaceText = (indexOfMessage, text) => {
-  COLLECTION.messageList[indexOfMessage].payload.message.text = text;
+/**
+ * @description Returns a timestamp based on the delta
+ * @param * {int} delta
+ * @returns * {string} Returns the current time stamp with the difference in delta
+ */
+export const getTimeStamp = delta => {
+  const timeOptions = {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: true
+  };
+  const timeDiff = Date.now() - delta;
+  const time = new Date(timeDiff).toLocaleString("en-US", timeOptions);
+  return time;
 };
 
 /**
@@ -25,29 +40,56 @@ const replaceText = (indexOfMessage, text) => {
  * @param * {array} collection
  */
 const storeId = (k, v, collection) => {
-  !includes(collection) && set(collection, k, v);
+  !collection.hasOwnProperty(k) && set(collection, k, v);
 };
 
+/**
+ * @description Replaces text property of message object with text argument
+ * @param * {int} indexOfMessage
+ * @param * {string} text
+ */
+const replaceText = (indexOfMessage, text) => {
+  COLLECTION.messageList[indexOfMessage].payload.message.text = text;
+};
+
+/**
+ * @description
+ * - stores deleteId with timestamp incase we want to update the deleted message with the delete timestamp
+ * - Gets the index of the message to be deleted from messageIds collection by passing the messageId of the delete message
+ * - if removeMessage is true, the deleted message will be removed from the message list
+ * - if removeMessage is false, the deleted message will have a text of "Message was deleted"
+ * - the delete object will be removed from the message list as it has no message of it's own
+ * @param * {object} obj
+ * @param * {int} idx
+ * @param * {boolean} removeMessage
+ */
 const performDeletes = (obj, idx, removeMessage = false) => {
   const messageId = obj.payload?.message?.id;
 
-  storeId(COLLECTION.deletedIds, idx, obj.delta);
-
+  storeId(idx, getTimeStamp(obj.delta), COLLECTION.deletedIds);
   let indexToDelete = COLLECTION.messageIds[messageId];
-  console.log(indexToDelete);
+
   if (removeMessage) {
     delete COLLECTION.messageList[indexToDelete];
   } else {
     replaceText(indexToDelete, "Message was deleted");
+    // TODO: add deleted time
   }
 
   // delete type delete object
   delete COLLECTION.messageList[idx];
 };
 
+/**
+ * @description
+ * - stores messages in the collection
+ * - if the message is not an update or delete object, store the messageIds
+ * - perform deletes and updates based on the messageIds collection
+ * @param * {array} messages
+ * @returns Returns new messageList with delete and updates
+ */
 export const interleavingMessages = messages => {
   COLLECTION.messageList = { ...messages };
-  console.log("messageList", COLLECTION.messageList);
   forEach(messages, (obj, idx) => {
     const messageId = obj.payload?.message?.id;
     const blackListedMessages =
@@ -59,10 +101,10 @@ export const interleavingMessages = messages => {
     } else if (obj.payload.type === messageTypes.DELETE) {
       performDeletes(obj, idx);
     } else if (obj.payload.type === messageTypes.UPDATE) {
-      // performUpdates(obj, idx);
+      //   performUpdates(obj, idx);
     }
   });
-  console.log("deletedIds", COLLECTION.deletedIds);
+  console.log(COLLECTION.deletedIds);
   const interleavedMessages = Object.values(COLLECTION.messageList);
   return interleavedMessages;
 };
