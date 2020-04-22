@@ -1,5 +1,4 @@
 // TODO: implement scroll to bottom functionality
-// TODO: implement rendering emojis
 
 import { includes, forEach, set, map } from "lodash";
 

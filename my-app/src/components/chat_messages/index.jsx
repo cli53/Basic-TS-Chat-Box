@@ -1,12 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { map, isEmpty } from "lodash";
+import { map } from "lodash";
 import { interleavingMessages } from "./utils";
 
 // TODO: implement scroll to bottom functionality
-// TODO: implement rendering emojis
-// bubble, text, avatar, details, displayName
 
 const DisplayName = styled.header`
   font-weight: 600;
@@ -45,20 +43,13 @@ const ChatRow = styled.section`
   flex-direction: ${props => (props.isUser ? "row-reverse" : "row")};
 `;
 
-const ChatMessages = ({ messages = [], isLoading, user: loginUser = {} }) => {
-  if (!isLoading && !isEmpty(messages)) {
+const ChatMessages = ({ messages, isLoading, user: loginUser = {} }) => {
+  if (!isLoading && messages) {
     const formattedMessages = interleavingMessages(messages);
-    return map(formattedMessages, message => {
+    return map(formattedMessages, (message, key) => {
       const isUser = message.userId === loginUser.id;
-      console.log(
-        "loginUser.id",
-        loginUser.id,
-        "message.userId",
-        message.userId,
-        isUser
-      );
       return (
-        <ChatRow className={`chat-row`} key={message.id} isUser={isUser}>
+        <ChatRow className={`chat-row`} key={key} isUser={isUser}>
           <Avatar alt="sender avatar" className="avatar">
             {message.avatar}
           </Avatar>
