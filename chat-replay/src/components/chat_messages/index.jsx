@@ -41,11 +41,11 @@ const ChatRow = styled.section`
   flex-direction: ${props => (props.isUser ? "row-reverse" : "row")};
 `;
 
-const ChatMessages = ({ messages, isLoading, user: loginUser = {} }) => {
+const ChatMessages = ({ messages, isLoading, currentUser }) => {
   if (!isLoading && messages) {
     const formattedMessages = interleavingMessages(messages);
     return map(formattedMessages, (message, key) => {
-      const isUser = message.userId === loginUser.id;
+      const isUser = message.userId === currentUser;
       return (
         <ChatRow className={`chat-row`} key={key} isUser={isUser}>
           <Avatar alt="sender avatar" className="avatar">
