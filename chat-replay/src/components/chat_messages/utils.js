@@ -82,6 +82,32 @@ const performDeletes = (obj, idx, removeMessage = false) => {
 
 /**
  * @description
+ * - if the update message has a messageId, find the message to be updated from the messageId collection, replace text and delete update message from messageList
+ * - else set text of update message to the new changes in user object such as display_name
+ * @param * {object} obj
+ * @param * {int} idx
+ */
+const performUpdates = (obj, idx) => {
+  const messageId = obj.payload?.message?.id;
+
+  if (messageId) {
+    let indexToUpdate = COLLECTION.messageIds[messageId];
+    replaceText(indexToUpdate, obj.payload.message.text);
+    // updates timestamp for editted message
+    COLLECTION.messageList[indexToUpdate].delta = obj.delta;
+    // delete the update message marker
+    delete COLLECTION.messageList[idx];
+  } else {
+    set(
+      COLLECTION.messageList[idx],
+      "payload.message.text",
+      `Updating name to ${obj.payload.user.display_name}`
+    );
+  }
+};
+
+/**
+ * @description
  * - stores messages in the collection
  * - if the message is not an update or delete object, store the messageIds
  * - perform deletes and updates based on the messageIds collection
@@ -104,7 +130,6 @@ export const interleavingMessages = messages => {
       //   performUpdates(obj, idx);
     }
   });
-  console.log(COLLECTION.deletedIds);
   const interleavedMessages = Object.values(COLLECTION.messageList);
   return interleavedMessages;
 };
