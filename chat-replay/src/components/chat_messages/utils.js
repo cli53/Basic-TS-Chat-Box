@@ -1,5 +1,3 @@
-// TODO: implement scroll to bottom functionality
-
 import { forEach, set, map } from "lodash";
 
 const COLLECTION = {
@@ -73,7 +71,6 @@ const performDeletes = (obj, idx, removeMessage = false) => {
     delete COLLECTION.messageList[indexToDelete];
   } else {
     replaceText(indexToDelete, "Message was deleted");
-    // TODO: add deleted time
   }
 
   // delete type delete object
