@@ -14,6 +14,10 @@ const messageTypes = {
   DELETE: "delete"
 };
 
+const replaceText = (indexOfMessage, text) => {
+  COLLECTION.messageList[indexOfMessage].payload.message.text = text;
+};
+
 /**
  * @description Hashes key value pairs to the collection
  * @param * {int} k
@@ -22,6 +26,23 @@ const messageTypes = {
  */
 const storeId = (k, v, collection) => {
   !includes(collection) && set(collection, k, v);
+};
+
+const performDeletes = (obj, idx, removeMessage = false) => {
+  const messageId = obj.payload?.message?.id;
+
+  storeId(COLLECTION.deletedIds, idx, obj.delta);
+
+  let indexToDelete = COLLECTION.messageIds[messageId];
+  console.log(indexToDelete);
+  if (removeMessage) {
+    delete COLLECTION.messageList[indexToDelete];
+  } else {
+    replaceText(indexToDelete, "Message was deleted");
+  }
+
+  // delete type delete object
+  delete COLLECTION.messageList[idx];
 };
 
 export const interleavingMessages = messages => {
@@ -36,12 +57,12 @@ export const interleavingMessages = messages => {
     if (messageId && blackListedMessages) {
       storeId(messageId, idx, COLLECTION.messageIds);
     } else if (obj.payload.type === messageTypes.DELETE) {
-      console.log("delete", obj);
+      performDeletes(obj, idx);
     } else if (obj.payload.type === messageTypes.UPDATE) {
-      console.log("update", obj);
+      // performUpdates(obj, idx);
     }
   });
-  console.log("messageIds", COLLECTION.messageIds);
+  console.log("deletedIds", COLLECTION.deletedIds);
   const interleavedMessages = Object.values(COLLECTION.messageList);
   return interleavedMessages;
 };
