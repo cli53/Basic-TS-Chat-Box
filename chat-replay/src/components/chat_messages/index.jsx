@@ -40,8 +40,8 @@ const ChatRow = styled.section`
   flex-direction: ${props => (props.isUser ? "row-reverse" : "row")};
 `;
 
-const ChatMessages = ({ messages, isLoading, currentUser }) => {
-  if (!isLoading && !isEmpty(messages)) {
+const ChatMessages = ({ messages, currentUser }) => {
+  if (!isEmpty(messages)) {
     return map(
       messages,
       ({ userId, avatar, display_name, text, time }, key) => {

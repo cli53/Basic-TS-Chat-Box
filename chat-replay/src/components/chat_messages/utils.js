@@ -15,18 +15,19 @@ const messageTypes = {
   DELETE: "delete"
 };
 
+const timeOptions = {
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric",
+  hour12: true
+};
+
 /**
  * @description Returns a timestamp based on the delta
  * @param * {int} delta
  * @returns * {string} Returns the current time stamp with the difference in delta
  */
 export const getTimeStamp = delta => {
-  const timeOptions = {
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: true
-  };
   const timeDiff = Date.now() - delta;
   const time = new Date(timeDiff).toLocaleString("en-US", timeOptions);
   return time;
@@ -169,9 +170,32 @@ export const interleavingMessages = messages => {
       performUpdates(obj, idx);
     }
   });
+
   const interleavedMessages = Object.values(COLLECTION.messageList);
   return {
     userIds: COLLECTION.userIds,
     formattedMessages: formatMessages(interleavedMessages)
   };
+};
+
+export const createMessage = (value, currentUser) => {
+  const lastMessageId = last(Object.keys(COLLECTION.messageIds));
+  console.log(lastMessageId);
+  const newMessageId = +lastMessageId + 1;
+  const newMessage = {
+    delta: 1000000000000,
+    payload: {
+      type: "message",
+      user: {
+        id: currentUser,
+        user_name: "TEST",
+        display_name: "TEST"
+      },
+      message: {
+        id: newMessageId,
+        text: value
+      }
+    }
+  };
+  return newMessage;
 };
