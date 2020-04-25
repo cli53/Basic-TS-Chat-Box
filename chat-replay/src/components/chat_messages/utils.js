@@ -1,9 +1,10 @@
-import { forEach, set, map } from "lodash";
+import { forEach, set, map, first, last, upperCase } from "lodash";
 
 const COLLECTION = {
   deletedIds: {},
   messageIds: {},
-  messageList: {}
+  messageList: {},
+  userIds: []
 };
 
 const messageTypes = {
@@ -115,9 +116,9 @@ const formatMessages = filteredMessages => {
       }
     }) => {
       const time = getTimeStamp(delta);
-      const initials = `${display_name[0]}${
-        display_name[display_name.length - 1]
-      }`;
+      const firstLetterInitial = first(display_name);
+      const lastLetterInitial = last(display_name);
+      const initials = upperCase(`${firstLetterInitial}${lastLetterInitial}`);
       const renderedMessage = {
         display_name,
         messageId,
@@ -151,6 +152,11 @@ export const interleavingMessages = messages => {
   COLLECTION.messageList = { ...messages };
   forEach(messages, (obj, idx) => {
     const messageId = obj.payload?.message?.id;
+    const userId = obj?.payload?.user?.id;
+    if (userId && !COLLECTION.userIds.includes(userId)) {
+      COLLECTION.userIds.push(userId);
+    }
+
     const blackListedMessages =
       obj.payload.type !== messageTypes.DELETE &&
       obj.payload.type !== messageTypes.UPDATE;
@@ -164,5 +170,8 @@ export const interleavingMessages = messages => {
     }
   });
   const interleavedMessages = Object.values(COLLECTION.messageList);
-  return formatMessages(interleavedMessages);
+  return {
+    userIds: COLLECTION.userIds,
+    formattedMessages: formatMessages(interleavedMessages)
+  };
 };

@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { map } from "lodash";
-import { interleavingMessages } from "./utils";
+import { map, isEmpty } from "lodash";
 
 const DisplayName = styled.header`
   font-weight: 600;
@@ -42,23 +41,25 @@ const ChatRow = styled.section`
 `;
 
 const ChatMessages = ({ messages, isLoading, currentUser }) => {
-  if (!isLoading && messages) {
-    const formattedMessages = interleavingMessages(messages);
-    return map(formattedMessages, (message, key) => {
-      const isUser = message.userId === currentUser;
-      return (
-        <ChatRow className={`chat-row`} key={key} isUser={isUser}>
-          <Avatar alt="sender avatar" className="avatar">
-            {message.avatar}
-          </Avatar>
-          <ChatBubble>
-            <DisplayName>{message.display_name}</DisplayName>
-            {message.text}
-          </ChatBubble>
-          <TimeDetails>{message.time}</TimeDetails>
-        </ChatRow>
-      );
-    });
+  if (!isLoading && !isEmpty(messages)) {
+    return map(
+      messages,
+      ({ userId, avatar, display_name, text, time }, key) => {
+        const isUser = userId === currentUser;
+        return (
+          <ChatRow className={`chat-row`} key={key} isUser={isUser}>
+            <Avatar alt="sender avatar" className="avatar">
+              {avatar}
+            </Avatar>
+            <ChatBubble>
+              <DisplayName>{display_name}</DisplayName>
+              {text}
+            </ChatBubble>
+            <TimeDetails>{time}</TimeDetails>
+          </ChatRow>
+        );
+      }
+    );
   } else {
     return <h1>Nothing to see here...</h1>;
   }
