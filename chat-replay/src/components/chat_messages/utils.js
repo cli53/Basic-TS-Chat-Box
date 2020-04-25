@@ -4,7 +4,7 @@ const COLLECTION = {
   deletedIds: {},
   messageIds: {},
   messageList: {},
-  userIds: []
+  userIds: {}
 };
 
 const messageTypes = {
@@ -40,7 +40,7 @@ export const getTimeStamp = delta => {
  * @param * {array} collection
  */
 const storeId = (k, v, collection) => {
-  !collection.hasOwnProperty(k) && set(collection, k, v);
+  return set(collection, k, v);
 };
 
 /**
@@ -152,16 +152,16 @@ const formatMessages = filteredMessages => {
 export const interleavingMessages = messages => {
   COLLECTION.messageList = { ...messages };
   forEach(messages, (obj, idx) => {
-    const messageId = obj.payload?.message?.id;
     const userId = obj?.payload?.user?.id;
-    if (userId && !COLLECTION.userIds.includes(userId)) {
-      COLLECTION.userIds.push(userId);
+    if (userId) {
+      storeId(userId, obj?.payload?.user, COLLECTION.userIds);
     }
 
     const blackListedMessages =
       obj.payload.type !== messageTypes.DELETE &&
       obj.payload.type !== messageTypes.UPDATE;
 
+    const messageId = obj.payload?.message?.id;
     if (messageId && blackListedMessages) {
       storeId(messageId, idx, COLLECTION.messageIds);
     } else if (obj.payload.type === messageTypes.DELETE) {
@@ -173,14 +173,14 @@ export const interleavingMessages = messages => {
 
   const interleavedMessages = Object.values(COLLECTION.messageList);
   return {
-    userIds: COLLECTION.userIds,
+    userIds: Object.keys(COLLECTION.userIds),
     formattedMessages: formatMessages(interleavedMessages)
   };
 };
 
 export const createMessage = (value, currentUser) => {
   const lastMessageId = last(Object.keys(COLLECTION.messageIds));
-  console.log(lastMessageId);
+  const userInfo = COLLECTION.userIds[currentUser];
   const newMessageId = +lastMessageId + 1;
   const newMessage = {
     delta: 1000000000000,
@@ -188,8 +188,8 @@ export const createMessage = (value, currentUser) => {
       type: "message",
       user: {
         id: currentUser,
-        user_name: "TEST",
-        display_name: "TEST"
+        user_name: userInfo.user_name,
+        display_name: userInfo.display_name
       },
       message: {
         id: newMessageId,
