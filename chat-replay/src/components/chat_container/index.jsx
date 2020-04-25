@@ -6,6 +6,7 @@ import { toNumber } from "lodash";
 import ChatMessages from "../chat_messages";
 import LoadingIndicator from "../chat_loading";
 import UserSelect from "../user_select";
+import { interleavingMessages } from "../chat_messages/utils";
 
 const ChatTitle = styled.h1`
   font-size: 1.5em;
@@ -14,16 +15,17 @@ const ChatTitle = styled.h1`
 `;
 
 const ChatContainer = () => {
-  const users = [1, 2, 3];
+  const url = "https://api.jsonbin.io/b/5e9a6b452940c704e1da618a";
+  const { data: messages, isLoading } = useFetch(url);
+
+  const { formattedMessages, userIds: users } = interleavingMessages(messages);
+
   const [currentUser, setCurrentUser] = useState(users[0]);
 
   const handleChange = event => {
     event.preventDefault();
     setCurrentUser(toNumber(event.target.value));
   };
-
-  const url = "https://api.jsonbin.io/b/5e9a6b452940c704e1da618a";
-  const { data: messages, isLoading } = useFetch(url);
 
   if (isLoading) return <LoadingIndicator />;
 
@@ -36,7 +38,7 @@ const ChatContainer = () => {
       />
       <ChatTitle>Stuck at Home Group Chat</ChatTitle>
       <ChatMessages
-        messages={messages}
+        messages={formattedMessages}
         isLoading={isLoading}
         currentUser={currentUser}
       />
