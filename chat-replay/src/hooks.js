@@ -19,5 +19,5 @@ export const useFetch = url => {
       });
   }, [setState, url]);
 
-  return state;
+  return { state, setState };
 };
