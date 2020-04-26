@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
@@ -32,15 +32,28 @@ const Button = styled.button`
 export const ChatInput = ({ updateMessages }) => {
   const [message, setMessage] = useState("");
 
+  const scrollToBottom = () => {
+    const chatInput = document.getElementById("chat-input");
+    chatInput.scrollIntoView();
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [message]);
+
   const handleSubmitMessage = event => {
     event.preventDefault();
-    updateMessages(message);
+    if (message) {
+      updateMessages(message);
+    }
+    setMessage("");
   };
 
   return (
     <InputContainer onSubmit={handleSubmitMessage}>
       <Input
         type="text"
+        id="chat-input"
         value={message}
         onChange={e => setMessage(e.target.value)}
         placeholder="Type Something..."
