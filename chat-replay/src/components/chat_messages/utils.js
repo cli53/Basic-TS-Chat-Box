@@ -4,7 +4,7 @@ const COLLECTION = {
   deletedIds: {},
   messageIds: {},
   messageList: {},
-  userIds: {}
+  userIds: { 1: null }
 };
 
 const messageTypes = {
@@ -183,7 +183,7 @@ export const createMessage = (value, currentUser) => {
   const userInfo = COLLECTION.userIds[currentUser];
   const newMessageId = +lastMessageId + 1;
   const newMessage = {
-    delta: 1000000000000,
+    delta: Date.now(),
     payload: {
       type: "message",
       user: {
