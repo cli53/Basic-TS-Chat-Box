@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
@@ -29,22 +29,14 @@ const Button = styled.button`
   border-radius: 3px;
 `;
 
-export const ChatInput = ({ updateMessages }) => {
+export const ChatInput = ({ updateMessages, scrollToBottom }) => {
   const [message, setMessage] = useState("");
 
-  const scrollToBottom = () => {
-    const chatInput = document.getElementById("chat-input");
-    chatInput.scrollIntoView();
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [message]);
-
-  const handleSubmitMessage = event => {
+  const handleSubmitMessage = async event => {
     event.preventDefault();
     if (message) {
-      updateMessages(message);
+      await updateMessages(message);
+      scrollToBottom();
     }
     setMessage("");
   };
@@ -67,7 +59,7 @@ export const ChatInput = ({ updateMessages }) => {
 
 ChatInput.propTypes = {
   updateMessages: PropTypes.func,
-  user: PropTypes.object
+  scrollToBottom: PropTypes.func
 };
 
 export default ChatInput;
