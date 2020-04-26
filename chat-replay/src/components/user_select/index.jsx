@@ -37,7 +37,7 @@ const UserSelect = ({ users, handleChange, currentUser }) => {
 
 UserSelect.propTypes = {
   users: PropTypes.array,
-  currentUser: PropTypes.number,
+  currentUser: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   handleChange: PropTypes.func
 };
 
