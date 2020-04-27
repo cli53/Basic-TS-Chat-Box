@@ -41,13 +41,17 @@ export const ChatInput = ({ updateMessages, scrollToBottom }) => {
     setMessage("");
   };
 
+  const onChange = e => {
+    setMessage(e.target.value);
+  };
+
   return (
     <InputContainer onSubmit={handleSubmitMessage}>
       <Input
         type="text"
         id="chat-input"
         value={message}
-        onChange={e => setMessage(e.target.value)}
+        onChange={onChange}
         placeholder="Type Something..."
         autoComplete={"off"}
         name="message"
