@@ -1,6 +1,7 @@
 {
   "parser": "babel-eslint",
-  "plugins": ["react,react-hooks"],
+  "plugins": ["react, react-hooks", "jsx-a11y"],
+  "extends": ["plugin:jsx-a11y/recommended"],
   "rules": {
     "strict": 0,
     "react-hooks/rules-of-hooks": "error",
