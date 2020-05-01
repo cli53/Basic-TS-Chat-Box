@@ -28,7 +28,16 @@ const ScrollBottomButton = styled.button`
   }
 `;
 
-const ChatContainer = () => {
+const CloseModalButton = styled.button`
+  height: 3rem;
+  width: 3rem;
+`;
+
+const Container = styled.div`
+  width: inherit;
+  height: inherit;
+`;
+const ChatContainer = ({ toggleModal }) => {
   const url = "https://api.jsonbin.io/b/5e9a6b452940c704e1da618a";
   const {
     state: { data: messages, isLoading },
@@ -59,12 +68,15 @@ const ChatContainer = () => {
   if (isLoading) return <LoadingIndicator />;
 
   return (
-    <>
+    <Container>
       <UserSelect
         users={users}
         handleChange={handleChange}
         currentUser={currentUser}
       />
+      <CloseModalButton onClick={() => toggleModal(false)}>
+        Close
+      </CloseModalButton>
       <ChatTitle>Stuck at Home Group Chat</ChatTitle>
       <ScrollBottomButton onClick={scrollToBottom}>
         Click to Scroll Bottom
@@ -74,12 +86,13 @@ const ChatContainer = () => {
         updateMessages={updateMessages}
         scrollToBottom={scrollToBottom}
       />
-    </>
+    </Container>
   );
 };
 
 ChatContainer.propTypes = {
-  user: PropTypes.object
+  user: PropTypes.object,
+  toggleModal: PropTypes.func
 };
 
 export default ChatContainer;
