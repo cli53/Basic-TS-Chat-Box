@@ -28,10 +28,6 @@ const ScrollBottomButton = styled.button`
   }
 `;
 
-const CloseModalButton = styled.button`
-  height: 3rem;
-  width: 3rem;
-`;
 
 const Container = styled.div`
   width: inherit;
@@ -74,9 +70,9 @@ const ChatContainer = ({ toggleModal }) => {
         handleChange={handleChange}
         currentUser={currentUser}
       />
-      <CloseModalButton onClick={() => toggleModal(false)}>
+      <button onClick={() => toggleModal(false)}>
         Close
-      </CloseModalButton>
+      </button>
       <ChatTitle>Stuck at Home Group Chat</ChatTitle>
       <ScrollBottomButton onClick={scrollToBottom}>
         Click to Scroll Bottom
