@@ -104,3 +104,19 @@ export const usePortal = (children, id) => {
   const domContainer = getRootElem();
   return createPortal(children, domContainer);
 };
+
+export const useDarkMode = () => {
+const [theme, setTheme] = useState(() => window.localStorage.getItem('theme') || 'light')
+const toggleTheme = () => {
+  if(theme === 'light') {
+    setTheme('dark')
+    window.localStorage.setItem('theme', 'dark')
+  } else {
+    setTheme('light')
+    window.localStorage.setItem('theme', 'light')
+
+
+  }
+}
+return [theme, toggleTheme]
+}

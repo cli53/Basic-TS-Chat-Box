@@ -4,39 +4,34 @@ import React, { useState } from "react";
 import ChatContainer from "./components/chat_container";
 import Modal from "./components/modal";
 import ModalButton from './components/modal_button'
-import {GlobalStyle} from './global'
+import {GlobalStyle} from './styles/global'
 import styled, {ThemeProvider} from 'styled-components'
-import {lightTheme, darkTheme} from './theme'
+import {lightTheme, darkTheme} from './styles/theme'
+import ThemeButton from './components/theme_button'
+import {useDarkMode} from './hooks'
 
 const ModalRoot = styled.div`
   position: relative;
   z-index: 999;
 `;
 
+// Loading fonts
 function App() {
-    const [theme, setTheme] = useState('light')
-    const [isModalOpen, toggleModal] = useState(false);
-  const toggleTheme = () => {
-    if(theme === 'light') {
-      setTheme('dark')
-    } else {
-      setTheme('light')
-    }
-  }
+  const [theme, toggleTheme] = useDarkMode()
+  const themeMode = theme === 'light' ? lightTheme : darkTheme
+  const [isModalOpen, toggleModal] = useState(false);
   return (
-    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+    <ThemeProvider theme={themeMode}>
       <GlobalStyle />
       <ModalRoot id="modal-root" />
-      <div>
         <h1>Chat App</h1>
-        <button onClick={() => toggleTheme()}>Toggle Theme</button>
+        <ThemeButton toggleTheme={toggleTheme} theme={theme}/>
         <ModalButton toggleModal={toggleModal}/>
         {isModalOpen ? (
           <Modal>
             <ChatContainer toggleModal={toggleModal} />
           </Modal>
         ) : null}
-      </div>
     </ThemeProvider>
   );
 }

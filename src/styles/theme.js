@@ -1,4 +1,4 @@
-import {colors} from './global'
+import {colors} from './colors'
 
 export const lightTheme = {
     bgc: colors.honeyDew,
