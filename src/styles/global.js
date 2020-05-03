@@ -11,6 +11,7 @@ export const GlobalStyle = createGlobalStyle`
     background-color: ${({theme}) => theme.bgc};
     color: ${({theme}) => theme.color};
     font-family: Roboto, BlinkMacSystemFont, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    transition: all 0.25s linear;
     button {
       background-color:${({theme}) => theme.accentBgc};
       color: ${({theme}) => theme.accentColor};
