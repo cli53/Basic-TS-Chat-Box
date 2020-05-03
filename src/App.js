@@ -15,6 +15,10 @@ const ModalRoot = styled.div`
   z-index: 999;
 `;
 
+const AppHeader = styled.h1`
+color: ${({theme}) => theme.softBlack};
+`
+
 // Loading fonts
 function App() {
   const [theme, toggleTheme] = useDarkMode()
@@ -24,7 +28,7 @@ function App() {
     <ThemeProvider theme={themeMode}>
       <GlobalStyle />
       <ModalRoot id="modal-root" />
-        <h1>Chat App</h1>
+        <AppHeader>Chat App</AppHeader>
         <ThemeButton toggleTheme={toggleTheme} theme={theme}/>
         <ModalButton toggleModal={toggleModal}/>
         {isModalOpen ? (

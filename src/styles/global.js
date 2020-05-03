@@ -6,12 +6,16 @@ export const GlobalStyle = createGlobalStyle`
     scroll-behavior: smooth;
   }
 
+  
   body {
     text-align: center;
     background-color: ${({theme}) => theme.bgc};
     color: ${({theme}) => theme.color};
     font-family: Roboto, BlinkMacSystemFont, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
     transition: all 0.25s linear;
+    h1 h2 h3 h4 {
+      color: ${({theme}) => theme.softBlack}
+    }
     button {
       background-color:${({theme}) => theme.accentBgc};
       color: ${({theme}) => theme.accentColor};
@@ -20,5 +24,7 @@ export const GlobalStyle = createGlobalStyle`
       width: 9rem;
       font-size: inherit;
     }
+
+
   }
 `;

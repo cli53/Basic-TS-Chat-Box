@@ -12,15 +12,12 @@ import { interleavingMessages, createMessage } from "../chat_messages/utils";
 const ChatTitle = styled.h1`
   font-size: 1.5em;
   text-align: center;
-  color: palevioletred;
 `;
 
 const ScrollBottomButton = styled.button`
   display: inline-block;
-  height: 1.5rem;
+  height: 3.5rem;
   width: fit-content;
-  background-color: lightblue;
-  color: black;
   border: none;
   border-radius: 2px;
   &::after {

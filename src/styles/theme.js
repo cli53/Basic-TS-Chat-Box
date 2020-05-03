@@ -2,10 +2,11 @@ import {colors} from './colors'
 
 export const lightTheme = {
     bgc: colors.honeyDew,
-    color: colors.darkGrey,
-    accentBgc: colors.imperialRed,
+    color: colors.white,
+    accentBgc: colors.steelBlue,
     accentColor:colors.honeyDew,
-    validationColor:  colors.imperialRed
+    validationColor:  colors.imperialRed,
+    softBlack: colors.softBlack,
 }
 
 export const darkTheme = {
