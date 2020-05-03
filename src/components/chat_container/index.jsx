@@ -12,15 +12,12 @@ import { interleavingMessages, createMessage } from "../chat_messages/utils";
 const ChatTitle = styled.h1`
   font-size: 1.5em;
   text-align: center;
-  color: palevioletred;
 `;
 
 const ScrollBottomButton = styled.button`
   display: inline-block;
-  height: 1.5rem;
+  height: 3.5rem;
   width: fit-content;
-  background-color: lightblue;
-  color: black;
   border: none;
   border-radius: 2px;
   &::after {
@@ -28,10 +25,6 @@ const ScrollBottomButton = styled.button`
   }
 `;
 
-const CloseModalButton = styled.button`
-  height: 3rem;
-  width: 3rem;
-`;
 
 const Container = styled.div`
   width: inherit;
@@ -74,9 +67,9 @@ const ChatContainer = ({ toggleModal }) => {
         handleChange={handleChange}
         currentUser={currentUser}
       />
-      <CloseModalButton onClick={() => toggleModal(false)}>
+      <button onClick={() => toggleModal(false)}>
         Close
-      </CloseModalButton>
+      </button>
       <ChatTitle>Stuck at Home Group Chat</ChatTitle>
       <ScrollBottomButton onClick={scrollToBottom}>
         Click to Scroll Bottom

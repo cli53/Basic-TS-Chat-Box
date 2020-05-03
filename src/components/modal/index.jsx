@@ -15,7 +15,7 @@ const ModalContainer = styled.section`
   scroll-behavior: smooth;
   index-z: 999;
   margin: 10% auto;
-  background-color: white;
+  background-color: ${({theme}) => theme.bgc};
   overflow-y: scroll;
   height: 600px;
   width: 500px;

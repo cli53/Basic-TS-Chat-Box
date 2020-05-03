@@ -17,10 +17,11 @@ const TimeDetails = styled.p`
 const ChatBubble = styled.div`
   height: fit-content;
   width: fit-content;
+  max-width: 350px;
   padding: 0.5rem;
   border-radius: 2%;
-  background-color: lightblue;
-  color: #14171a;
+  background-color: ${({theme}) => theme.accentBgc};
+  color: ${({theme}) => theme.color};
 `;
 
 const Avatar = styled.div`
