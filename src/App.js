@@ -17,12 +17,12 @@ const ModalRoot = styled.div`
 
 // TODO:
 // Implement Typescript
-// Voice message,
-// sign in form,
-// attachment,
-// change background
-// delete - delete for the user and option for the other person
 // Loading fonts
+// sign in form,
+// delete - delete for the user and option for the other person
+// attachment,
+// Voice message,
+// abilitychange background
 
 const AppHeader = styled.h1`
   color: ${({ theme }) => theme.softBlack};
