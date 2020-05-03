@@ -105,17 +105,19 @@ export const usePortal = (children, id) => {
   return createPortal(children, domContainer);
 };
 
+const setMode = (setTheme, mode) => {
+  setTheme(mode)
+  window.localStorage.setItem('theme', mode)
+}
+
 export const useDarkMode = () => {
-const [theme, setTheme] = useState(() => window.localStorage.getItem('theme') || 'light')
+const defaultTheme = () => window.localStorage.getItem('theme') || 'light'
+const [theme, setTheme] = useState(defaultTheme)
 const toggleTheme = () => {
   if(theme === 'light') {
-    setTheme('dark')
-    window.localStorage.setItem('theme', 'dark')
+    setMode(setTheme, 'dark')
   } else {
-    setTheme('light')
-    window.localStorage.setItem('theme', 'light')
-
-
+    setMode(setTheme, 'light')
   }
 }
 return [theme, toggleTheme]
