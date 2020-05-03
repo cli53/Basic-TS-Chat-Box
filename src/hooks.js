@@ -111,8 +111,16 @@ const setMode = (setTheme, mode) => {
 }
 
 export const useDarkMode = () => {
-const defaultTheme = () => window.localStorage.getItem('theme') || 'light'
+const localTheme = window.localStorage.getItem('theme')
+const defaultTheme = () => localTheme || 'light'
 const [theme, setTheme] = useState(defaultTheme)
+
+useEffect(() => {
+  // sets the default theme accordingly to the OS color scheme
+  if(!localTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ) {
+    setMode(setTheme, 'dark')
+  }
+}, [localTheme])
 const toggleTheme = () => {
   if(theme === 'light') {
     setMode(setTheme, 'dark')
