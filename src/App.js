@@ -30,6 +30,14 @@ const ModalRoot = styled.div`
   z-index: 999;
 `;
 
+// TODO:
+// Implement Typescript
+// Voice message,
+// sign in form,
+// attachment,
+// change background
+// delete - delete for the user and option for the other person
+
 function App() {
   const [isModalOpen, toggleModal] = useState(false);
 
