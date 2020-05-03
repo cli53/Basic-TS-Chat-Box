@@ -13,11 +13,8 @@ const Button = styled.button`
   }
 `;
 
-const ModalButton = ({toggleModal}) => {
-    return (
-        <Button onClick={() => toggleModal(true)} >show chat</Button>
-    )
-}
+const ModalButton = ({toggleModal}) => <Button onClick={() => toggleModal(true)} >show chat</Button>
+
 
 ModalButton.propTypes = {
     toggleModal: PropTypes.func,

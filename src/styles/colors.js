@@ -5,6 +5,7 @@ export const colors = {
     steelBlue: '#457b9dff', // dark contrast color
     prussianBlue: '#1d3557ff', // dark type color
     white: '#fffff',
-    darkGrey: '#444444'
+    darkGrey: '#444444',
+    softBlack: '#0e1111'
     }
       

@@ -19,8 +19,8 @@ const ChatBubble = styled.div`
   width: fit-content;
   padding: 0.5rem;
   border-radius: 2%;
-  background-color: lightblue;
-  color: #14171a;
+  background-color: ${({theme}) => theme.accentBgc};
+  color: ${({theme}) => theme.color};
 `;
 
 const Avatar = styled.div`
