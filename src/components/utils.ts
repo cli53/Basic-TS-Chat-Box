@@ -143,7 +143,7 @@ const formatMessages = (filteredMessages: Messages[]) => {
       payload: {
         type,
         user: { id: userId, display_name },
-        message: { id: messageId = null, text } = {}
+        message: { id: messageId, text } = {}
       }
     }: Messages) => {
       const time = getTimeStamp(delta);
@@ -210,7 +210,7 @@ export const interleavingMessages = (messages: Messages[]) => {
   };
 };
 
-export const createMessage = (value, currentUser) => {
+export const createMessage = (value: string, currentUser: number) => {
   const lastMessageId = last(Object.keys(COLLECTION.messageIds));
   const userInfo = COLLECTION.userIds[currentUser];
   const newMessageId = +lastMessageId + 1;

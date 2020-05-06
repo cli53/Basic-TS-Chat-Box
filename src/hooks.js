@@ -106,27 +106,32 @@ export const usePortal = (children, id) => {
 };
 
 const setMode = (setTheme, mode) => {
-  setTheme(mode)
-  window.localStorage.setItem('theme', mode)
-}
+  setTheme(mode);
+  window.localStorage.setItem("theme", mode);
+};
 
 export const useDarkMode = () => {
-const localTheme = window.localStorage.getItem('theme')
-const defaultTheme = () => localTheme || 'light'
-const [theme, setTheme] = useState(defaultTheme)
+  const localTheme = window.localStorage.getItem("theme");
+  const defaultTheme = () => localTheme || "light";
+  const [theme, setTheme] = useState(defaultTheme);
 
-useEffect(() => {
-  // sets the default theme accordingly to the OS color scheme
-  if(!localTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ) {
-    setMode(setTheme, 'dark')
-  }
-}, [localTheme])
-const toggleTheme = () => {
-  if(theme === 'light') {
-    setMode(setTheme, 'dark')
-  } else {
-    setMode(setTheme, 'light')
-  }
-}
-return [theme, toggleTheme]
-}
+  useEffect(() => {
+    // sets the default theme accordingly to the OS color scheme
+    if (
+      !localTheme &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      setMode(setTheme, "dark");
+    }
+  }, [localTheme]);
+
+  const toggleTheme = () => {
+    if (theme === "light") {
+      setMode(setTheme, "dark");
+    } else {
+      setMode(setTheme, "light");
+    }
+  };
+  return [theme, toggleTheme];
+};
