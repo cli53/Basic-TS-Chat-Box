@@ -1,5 +1,35 @@
 import { forEach, set, map, first, last, upperCase } from "lodash";
 
+interface Message {
+  id?: number;
+  text?: string;
+}
+
+interface User {
+  id?: number;
+  user_name?: string;
+  display_name?: string;
+}
+
+interface Payload {
+  type?: string;
+  user?: User;
+  message?: Message;
+}
+
+interface Messages {
+  delta: number;
+  payload: Payload;
+  message?: Message;
+}
+
+interface Collection {
+  deletedIds: object;
+  messageIds: object;
+  messageList: object;
+  userIds: { 1: null };
+}
+
 const COLLECTION = {
   deletedIds: {},
   messageIds: {},
@@ -27,7 +57,7 @@ const timeOptions = {
  * @param * {int} delta
  * @returns * {string} Returns the current time stamp with the difference in delta
  */
-export const getTimeStamp = delta => {
+export const getTimeStamp = (delta: number): string => {
   const timeDiff = Date.now() - delta;
   const time = new Date(timeDiff).toLocaleString("en-US", timeOptions);
   return time;
@@ -39,8 +69,8 @@ export const getTimeStamp = delta => {
  * @param * {int} v
  * @param * {array} collection
  */
-const storeId = (k, v, collection) => {
-  return set(collection, k, v);
+const storeId = (k: any, v: any, collection: any[]): void => {
+  set(collection, k, v);
 };
 
 /**
@@ -48,7 +78,7 @@ const storeId = (k, v, collection) => {
  * @param * {int} indexOfMessage
  * @param * {string} text
  */
-const replaceText = (indexOfMessage, text) => {
+const replaceText = (indexOfMessage: number, text: string): void => {
   COLLECTION.messageList[indexOfMessage].payload.message.text = text;
 };
 
@@ -63,7 +93,7 @@ const replaceText = (indexOfMessage, text) => {
  * @param * {int} idx
  * @param * {boolean} removeMessage
  */
-const performDeletes = (obj, idx, removeMessage = false) => {
+const performDeletes = (obj: Messages, idx: number, removeMessage = false) => {
   const messageId = obj.payload?.message?.id;
 
   storeId(idx, getTimeStamp(obj.delta), COLLECTION.deletedIds);
@@ -86,7 +116,7 @@ const performDeletes = (obj, idx, removeMessage = false) => {
  * @param * {object} obj
  * @param * {int} idx
  */
-const performUpdates = (obj, idx) => {
+const performUpdates = (obj: Messages, idx: number) => {
   const messageId = obj.payload?.message?.id;
 
   if (messageId) {
@@ -105,17 +135,17 @@ const performUpdates = (obj, idx) => {
   }
 };
 
-const formatMessages = filteredMessages => {
+const formatMessages = (filteredMessages: Messages[]) => {
   return map(
     filteredMessages,
     ({
       delta,
       payload: {
         type,
-        user: { id: userId, display_name } = {},
-        message: { id: messageId = null, text } = {}
+        user: { id: userId, display_name },
+        message: { id: messageId, text } = {}
       }
-    }) => {
+    }: Messages) => {
       const time = getTimeStamp(delta);
       const firstLetterInitial = first(display_name);
       const lastLetterInitial = last(display_name);
@@ -149,7 +179,7 @@ const formatMessages = filteredMessages => {
  * @param * {array} messages
  * @returns Returns new messageList with delete and updates
  */
-export const interleavingMessages = messages => {
+export const interleavingMessages = (messages: Messages[]) => {
   COLLECTION.messageList = { ...messages };
   forEach(messages, (obj, idx) => {
     const userId = obj?.payload?.user?.id;
@@ -171,14 +201,16 @@ export const interleavingMessages = messages => {
     }
   });
 
-  const interleavedMessages = Object.values(COLLECTION.messageList);
+  const interleavedMessages: Array<object> = Object.values(
+    COLLECTION.messageList
+  );
   return {
     userIds: Object.keys(COLLECTION.userIds),
     formattedMessages: formatMessages(interleavedMessages)
   };
 };
 
-export const createMessage = (value, currentUser) => {
+export const createMessage = (value: string, currentUser: number) => {
   const lastMessageId = last(Object.keys(COLLECTION.messageIds));
   const userInfo = COLLECTION.userIds[currentUser];
   const newMessageId = +lastMessageId + 1;

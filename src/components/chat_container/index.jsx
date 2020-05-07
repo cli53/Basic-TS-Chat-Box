@@ -7,7 +7,7 @@ import ChatMessages from "../chat_messages";
 import ChatInput from "../chat_input";
 import LoadingIndicator from "../chat_loading";
 import UserSelect from "../user_select";
-import { interleavingMessages, createMessage } from "../chat_messages/utils";
+import { interleavingMessages, createMessage } from "../utils.ts";
 
 const ChatTitle = styled.h1`
   font-size: 1.5em;
@@ -24,7 +24,6 @@ const ScrollBottomButton = styled.button`
     content: " ⬇️";
   }
 `;
-
 
 const Container = styled.div`
   width: inherit;
@@ -67,9 +66,7 @@ const ChatContainer = ({ toggleModal }) => {
         handleChange={handleChange}
         currentUser={currentUser}
       />
-      <button onClick={() => toggleModal(false)}>
-        Close
-      </button>
+      <button onClick={() => toggleModal(false)}>Close</button>
       <ChatTitle>Stuck at Home Group Chat</ChatTitle>
       <ScrollBottomButton onClick={scrollToBottom}>
         Click to Scroll Bottom
