@@ -1,40 +1,43 @@
 import { forEach, set, map, first, last, upperCase } from "lodash";
 
 interface Message {
-  id?: number;
-  text?: string;
+  id: number;
+  text: string;
 }
 
 interface User {
-  id?: number;
-  user_name?: string;
-  display_name?: string;
+  id: number;
+  user_name: string;
+  display_name: string;
 }
 
 interface Payload {
-  type?: string;
-  user?: User;
-  message?: Message;
+  type: string;
+  user: User;
+  message: Message;
 }
 
 interface Messages {
   delta: number;
   payload: Payload;
-  message?: Message;
+}
+
+interface ObjectLiteral {
+  [key: string]: any;
 }
 
 interface Collection {
-  deletedIds: object;
-  messageIds: object;
-  messageList: object;
-  userIds: { 1: null };
+  deletedIds: ObjectLiteral;
+  messageIds: ObjectLiteral;
+  messageList: ObjectLiteral;
+  userIds: ObjectLiteral;
 }
 
-const COLLECTION = {
+const COLLECTION : ObjectLiteral = {
   deletedIds: {},
   messageIds: {},
   messageList: {},
-  userIds: { 1: null }
+  userIds: {1: null}
 };
 
 const messageTypes = {
@@ -135,7 +138,7 @@ const performUpdates = (obj: Messages, idx: number) => {
   }
 };
 
-const formatMessages = (filteredMessages: Messages[]) => {
+const formatMessages = (filteredMessages: object[]) => {
   return map(
     filteredMessages,
     ({
@@ -143,7 +146,7 @@ const formatMessages = (filteredMessages: Messages[]) => {
       payload: {
         type,
         user: { id: userId, display_name },
-        message: { id: messageId, text } = {}
+        message: { id: messageId, text }
       }
     }: Messages) => {
       const time = getTimeStamp(delta);
@@ -211,23 +214,24 @@ export const interleavingMessages = (messages: Messages[]) => {
 };
 
 export const createMessage = (value: string, currentUser: number) => {
-  const lastMessageId = last(Object.keys(COLLECTION.messageIds));
+  const lastMessageId = last(Object.keys(COLLECTION.messageIds)) || -1;
   const userInfo = COLLECTION.userIds[currentUser];
-  const newMessageId = +lastMessageId + 1;
-  const newMessage = {
-    delta: Date.now(),
-    payload: {
-      type: "message",
-      user: {
-        id: currentUser,
-        user_name: userInfo.user_name,
-        display_name: userInfo.display_name
-      },
-      message: {
-        id: newMessageId,
-        text: value
+  // if no messageId are found, create first message that starts at 0
+    const newMessageId = +lastMessageId + 1;
+    const newMessage = {
+      delta: Date.now(),
+      payload: {
+        type: "message",
+        user: {
+          id: currentUser,
+          user_name: userInfo.user_name,
+          display_name: userInfo.display_name
+        },
+        message: {
+          id: newMessageId,
+          text: value
+        }
       }
-    }
-  };
-  return newMessage;
+    };
+    return newMessage;
 };
