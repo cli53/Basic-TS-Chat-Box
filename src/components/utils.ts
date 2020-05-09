@@ -1,5 +1,9 @@
 import { forEach, set, map, first, last, upperCase } from "lodash";
 
+interface ObjectLiteral {
+  [key: string]: any;
+}
+
 interface Message {
   id: number;
   text: string;
@@ -13,8 +17,8 @@ interface User {
 
 interface Payload {
   type: string;
-  user: User;
-  message: Message;
+  user: User | ObjectLiteral;
+  message: Message | ObjectLiteral;
 }
 
 interface Messages {
@@ -22,22 +26,32 @@ interface Messages {
   payload: Payload;
 }
 
-interface ObjectLiteral {
-  [key: string]: any;
+interface DeleteIds {
+  [key: number]: string;
 }
 
-interface Collection {
-  deletedIds: ObjectLiteral;
-  messageIds: ObjectLiteral;
-  messageList: ObjectLiteral;
-  userIds: ObjectLiteral;
+interface MessageIds {
+  [key: number]: number;
 }
 
-const COLLECTION : ObjectLiteral = {
-  deletedIds: {},
-  messageIds: {},
-  messageList: {},
-  userIds: {1: null}
+interface MessageLists {
+  [key: number]: Messages;
+}
+interface UserIds {
+  [key: number]: User;
+}
+
+const COLLECTION: ObjectLiteral = {
+  deletedIds: {} as DeleteIds,
+  messageIds: {} as MessageIds,
+  messageList: {} as MessageLists,
+  userIds: {
+    1: {
+      id: -1,
+      user_name: "",
+      display_name: ""
+    }
+  } as UserIds
 };
 
 const messageTypes = {
@@ -138,15 +152,15 @@ const performUpdates = (obj: Messages, idx: number) => {
   }
 };
 
-const formatMessages = (filteredMessages: object[]) => {
+const formatMessages = (filteredMessages: Messages[]) => {
   return map(
     filteredMessages,
     ({
       delta,
       payload: {
         type,
-        user: { id: userId, display_name },
-        message: { id: messageId, text }
+        user: { id: userId = 0, display_name },
+        message: { id: messageId = -1, text } = {}
       }
     }: Messages) => {
       const time = getTimeStamp(delta);
@@ -204,7 +218,7 @@ export const interleavingMessages = (messages: Messages[]) => {
     }
   });
 
-  const interleavedMessages: Array<object> = Object.values(
+  const interleavedMessages: Array<Messages> = Object.values(
     COLLECTION.messageList
   );
   return {
@@ -217,21 +231,21 @@ export const createMessage = (value: string, currentUser: number) => {
   const lastMessageId = last(Object.keys(COLLECTION.messageIds)) || -1;
   const userInfo = COLLECTION.userIds[currentUser];
   // if no messageId are found, create first message that starts at 0
-    const newMessageId = +lastMessageId + 1;
-    const newMessage = {
-      delta: Date.now(),
-      payload: {
-        type: "message",
-        user: {
-          id: currentUser,
-          user_name: userInfo.user_name,
-          display_name: userInfo.display_name
-        },
-        message: {
-          id: newMessageId,
-          text: value
-        }
+  const newMessageId = +lastMessageId + 1;
+  const newMessage = {
+    delta: Date.now(),
+    payload: {
+      type: "message",
+      user: {
+        id: currentUser,
+        user_name: userInfo.user_name,
+        display_name: userInfo.display_name
+      },
+      message: {
+        id: newMessageId,
+        text: value
       }
-    };
-    return newMessage;
+    }
+  };
+  return newMessage;
 };
