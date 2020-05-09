@@ -17,7 +17,8 @@
     "noEmit": true,
     "jsx": "react", // use typescript to transpile jsx to js
     "rootDir": "src",
-    "outDir": "build"
+    "outDir": "build",
+    "noImplicitAny": true
   },
   "include": ["src"] // Read in any files it understands in the src directory
 }

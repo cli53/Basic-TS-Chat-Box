@@ -15,6 +15,15 @@ interface User {
   display_name: string;
 }
 
+interface FormatMessages {
+  display_name: string;
+  messageId: number;
+  text: string;
+  time: string;
+  userId: number;
+  avatar: string;
+}
+
 interface Payload {
   type: string;
   user: User | ObjectLiteral;
@@ -110,7 +119,11 @@ const replaceText = (indexOfMessage: number, text: string): void => {
  * @param * {int} idx
  * @param * {boolean} removeMessage
  */
-const performDeletes = (obj: Messages, idx: number, removeMessage = false) => {
+const performDeletes = (
+  obj: Messages,
+  idx: number,
+  removeMessage = false
+): void => {
   const messageId = obj.payload?.message?.id;
 
   storeId(idx, getTimeStamp(obj.delta), COLLECTION.deletedIds);
@@ -133,7 +146,7 @@ const performDeletes = (obj: Messages, idx: number, removeMessage = false) => {
  * @param * {object} obj
  * @param * {int} idx
  */
-const performUpdates = (obj: Messages, idx: number) => {
+const performUpdates = (obj: Messages, idx: number): void => {
   const messageId = obj.payload?.message?.id;
 
   if (messageId) {
@@ -152,7 +165,7 @@ const performUpdates = (obj: Messages, idx: number) => {
   }
 };
 
-const formatMessages = (filteredMessages: Messages[]) => {
+const formatMessages = (filteredMessages: Messages[]): FormatMessages[] => {
   return map(
     filteredMessages,
     ({
@@ -162,7 +175,7 @@ const formatMessages = (filteredMessages: Messages[]) => {
         user: { id: userId = 0, display_name },
         message: { id: messageId = -1, text } = {}
       }
-    }: Messages) => {
+    }: Messages): FormatMessages => {
       const time = getTimeStamp(delta);
       const firstLetterInitial = first(display_name);
       const lastLetterInitial = last(display_name);
@@ -175,15 +188,15 @@ const formatMessages = (filteredMessages: Messages[]) => {
         userId,
         avatar: initials
       };
-      if (type === messageTypes.MESSAGE || type === messageTypes.UPDATE) {
-        return renderedMessage;
-      } else if (type === messageTypes.CONNECT) {
+      if (type === messageTypes.CONNECT) {
         renderedMessage.text = `${display_name} has joined the chat`;
         return renderedMessage;
       } else if (type === messageTypes.DISCONNECT) {
         renderedMessage.text = `${display_name} has left the chat`;
         return renderedMessage;
       }
+      // MessageTypes.MESSAGE || messageTypes.UPDATE
+      return renderedMessage;
     }
   );
 };
@@ -196,7 +209,11 @@ const formatMessages = (filteredMessages: Messages[]) => {
  * @param * {array} messages
  * @returns Returns new messageList with delete and updates
  */
-export const interleavingMessages = (messages: Messages[]) => {
+
+// object keys are coerced into strings, thus, object keys returns an array of strings
+export const interleavingMessages = (
+  messages: Messages[]
+): { userIds: string[]; formattedMessages: FormatMessages[] } => {
   COLLECTION.messageList = { ...messages };
   forEach(messages, (obj, idx) => {
     const userId = obj?.payload?.user?.id;
@@ -218,16 +235,14 @@ export const interleavingMessages = (messages: Messages[]) => {
     }
   });
 
-  const interleavedMessages: Array<Messages> = Object.values(
-    COLLECTION.messageList
-  );
+  const interleavedMessages: Messages[] = Object.values(COLLECTION.messageList);
   return {
     userIds: Object.keys(COLLECTION.userIds),
     formattedMessages: formatMessages(interleavedMessages)
   };
 };
 
-export const createMessage = (value: string, currentUser: number) => {
+export const createMessage = (value: string, currentUser: number): Messages => {
   const lastMessageId = last(Object.keys(COLLECTION.messageIds)) || -1;
   const userInfo = COLLECTION.userIds[currentUser];
   // if no messageId are found, create first message that starts at 0
