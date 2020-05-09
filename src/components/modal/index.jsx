@@ -11,6 +11,7 @@ const ModalOverlay = styled.div`
   left: 0;
 `;
 
+// scroll smooth has on the element or be the parent
 const ModalContainer = styled.section`
   scroll-behavior: smooth;
   index-z: 999;
@@ -19,6 +20,9 @@ const ModalContainer = styled.section`
   overflow-y: scroll;
   height: 600px;
   width: 500px;
+  border-radius: 3px;
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  padding: 1rem;
 `;
 
 const Modal = ({ children }) => {

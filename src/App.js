@@ -17,6 +17,8 @@ const ModalRoot = styled.div`
 
 // TODO:
 // Implement Typescript
+// fix up collection ts
+// add ts to react components
 // Loading fonts
 // sign in form,
 // delete - delete for the user and option for the other person
@@ -24,6 +26,7 @@ const ModalRoot = styled.div`
 // Voice message,
 // abilitychange background
 // adding design icons: iconmonstr and undraw, pexels, and tinypng
+// reduce to chatbox consumed by another app
 
 const AppHeader = styled.h1`
   color: ${({ theme }) => theme.softBlack};
