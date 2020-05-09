@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "tsc",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -39,6 +39,7 @@
     ]
   },
   "devDependencies": {
-    "@types/lodash": "4.14.150"
+    "@types/lodash": "4.14.150",
+    "@types/styled-components": "5.1.0"
   }
 }

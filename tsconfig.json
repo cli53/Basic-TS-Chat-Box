@@ -1,25 +1,23 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
+    "target": "es5", // Translate newer JavaScript constructs down to an older version like ECMAScript 5
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true, // allow a partial TypeScript and JavaScript codebase
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "strictNullChecks": true, // enable strict null checks as a best practice
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
+    "module": "esnext", // specify module code generation
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "sourceMap": true, // allow sourcemap support
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react", // use typescript to transpile jsx to js
+    "rootDir": "src",
+    "outDir": "build"
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"] // Read in any files it understands in the src directory
 }

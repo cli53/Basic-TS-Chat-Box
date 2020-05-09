@@ -23,6 +23,7 @@ const ModalRoot = styled.div`
 // attachment,
 // Voice message,
 // abilitychange background
+// adding design icons: iconmonstr and undraw, pexels, and tinypng
 
 const AppHeader = styled.h1`
   color: ${({ theme }) => theme.softBlack};
