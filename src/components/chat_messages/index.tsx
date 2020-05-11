@@ -48,7 +48,7 @@ type ChatMessagesProps = {
   /** messages for rendering out the chat*/
   messages: FormatMessages[];
   /** the user id to compare messages with */
-  currentUser: number;
+  currentUser: string;
 };
 
 const ChatMessages: FC<ChatMessagesProps> = ({ messages, currentUser }) => {

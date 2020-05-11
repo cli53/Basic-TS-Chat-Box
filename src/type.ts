@@ -18,7 +18,7 @@ export interface FormatMessages {
   messageId: number;
   text: string;
   time: string;
-  userId: number;
+  userId: string;
   avatar: string;
 }
 

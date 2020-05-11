@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useFetch } from "../../hooks";
 import { toNumber } from "lodash";
-import ChatMessages from "../chat_messages/index.tsx";
+import ChatMessages from "../chat_messages/index";
 import ChatInput from "../chat_input";
 import LoadingIndicator from "../chat_loading";
 import UserSelect from "../user_select";
-import { interleavingMessages, createMessage } from "../utils.ts";
+import { interleavingMessages, createMessage } from "../utils";
 
 const ChatTitle = styled.h1`
   font-size: 1.5em;
@@ -29,7 +28,11 @@ const Container = styled.div`
   width: inherit;
   height: inherit;
 `;
-const ChatContainer = ({ toggleModal }) => {
+
+type ChatContainerProps = {
+  toggleModal: (bool: boolean) => void;
+};
+const ChatContainer: React.FC<ChatContainerProps> = ({ toggleModal }) => {
   const url = "https://api.jsonbin.io/b/5e9a6b452940c704e1da618a";
   const {
     state: { data: messages, isLoading },
@@ -40,17 +43,19 @@ const ChatContainer = ({ toggleModal }) => {
 
   const [currentUser, setCurrentUser] = useState(users[0]);
 
-  const handleChange = event => {
-    setCurrentUser(toNumber(event.target.value));
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setCurrentUser(event.target.value);
   };
 
   const scrollToBottom = () => {
     const chatInput = document.getElementById("chat-input");
-    chatInput.scrollIntoView();
+    if (chatInput) {
+      chatInput.scrollIntoView();
+    }
   };
 
-  const updateMessages = value => {
-    const newMessage = createMessage(value, currentUser);
+  const updateMessages = (text: string) => {
+    const newMessage = createMessage(text, currentUser);
     setMessage(prev => ({
       ...prev,
       data: [...prev.data, newMessage]
@@ -78,11 +83,6 @@ const ChatContainer = ({ toggleModal }) => {
       />
     </Container>
   );
-};
-
-ChatContainer.propTypes = {
-  user: PropTypes.object,
-  toggleModal: PropTypes.func
 };
 
 export default ChatContainer;

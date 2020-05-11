@@ -16,7 +16,7 @@ const Select = styled.select`
 type UserSelectProps = {
   users: string[];
   handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  currentUser: number;
+  currentUser: string;
 };
 const UserSelect: React.FC<UserSelectProps> = ({
   users,

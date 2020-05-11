@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
+import { Messages } from "./type";
 
-export const useFetch = url => {
-  const intitalState = { data: null, isLoading: null };
+export const useFetch = (url: string) => {
+  const intitalState = { data: [] as Messages[], isLoading: false as boolean };
   const [state, setState] = useState(intitalState);
   useEffect(() => {
     setState(state => ({ data: state.data, isLoading: true }));
@@ -25,9 +26,10 @@ export const useFetch = url => {
 
 /**
  * Creates DOM element to be used as React root.
+ * @param {String} id
  * @returns {HTMLElement}
  */
-function createRootElement(id) {
+function createRootElement(id: string) {
   const rootContainer = document.createElement("div");
   rootContainer.setAttribute("id", id);
   return rootContainer;
@@ -37,11 +39,13 @@ function createRootElement(id) {
  * Appends element as last child of body.
  * @param {HTMLElement} rootElem
  */
-function addRootElement(rootElem) {
-  document.body.insertBefore(
-    rootElem,
-    document.body.lastElementChild.nextElementSibling
-  );
+function addRootElement(rootElem: Element) {
+  if (document.body.lastElementChild) {
+    document.body.insertBefore(
+      rootElem,
+      document.body.lastElementChild.nextElementSibling
+    );
+  }
 }
 
 /**
@@ -56,8 +60,10 @@ function addRootElement(rootElem) {
  * @param {Object} children JSX element that will be mounted wrapped with a DOM element and attached to the target id
  * @returns {HTMLElement} The DOM node to use as the Portal target.
  */
-export const usePortal = (children, id) => {
-  const rootElemRef = useRef(null);
+export const usePortal = (children: React.ReactNode, id: string) => {
+  // https://stackoverflow.com/questions/58017215/what-typescript-type-do-i-use-with-useref-hook-when-setting-current-manually
+  // If the initial value includes null, but the specified type param doesn't, it'll be treated as an immutable RefObject.
+  const rootElemRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(
     function setupElement() {
@@ -71,12 +77,14 @@ export const usePortal = (children, id) => {
         addRootElement(parentElem);
       }
 
-      // Add the detached element to the parent
-      parentElem.appendChild(rootElemRef.current);
+      if (rootElemRef.current) {
+        // Add the detached element to the parent
+        parentElem.appendChild(rootElemRef.current);
+      }
 
       return function removeElement() {
-        rootElemRef.current.remove();
-        if (parentElem.childNodes.length === -1) {
+        if (rootElemRef.current && parentElem.childNodes.length === -1) {
+          rootElemRef.current.remove();
           parentElem.remove();
         }
       };
@@ -105,7 +113,7 @@ export const usePortal = (children, id) => {
   return createPortal(children, domContainer);
 };
 
-const setMode = (setTheme, mode) => {
+const setMode = (setTheme: (mode: string) => void, mode: string) => {
   setTheme(mode);
   window.localStorage.setItem("theme", mode);
 };

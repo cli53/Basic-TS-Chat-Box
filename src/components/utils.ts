@@ -210,7 +210,7 @@ export const interleavingMessages = (
   };
 };
 
-export const createMessage = (value: string, currentUser: number): Messages => {
+export const createMessage = (text: string, currentUser: string): Messages => {
   const lastMessageId = last(Object.keys(COLLECTION.messageIds)) || -1;
   const userInfo = COLLECTION.userIds[currentUser];
   // if no messageId are found, create first message that starts at 0
@@ -226,7 +226,7 @@ export const createMessage = (value: string, currentUser: number): Messages => {
       },
       message: {
         id: newMessageId,
-        text: value
+        text
       }
     }
   };
