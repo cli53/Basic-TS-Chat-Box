@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const Input = styled.input`
@@ -29,19 +28,28 @@ const Button = styled.button`
   border-radius: 3px;
 `;
 
-export const ChatInput = ({ updateMessages, scrollToBottom }) => {
+type ChatInputProps = {
+  updateMessages: (message: string) => void;
+  scrollToBottom: () => void;
+};
+
+export const ChatInput: React.FC<ChatInputProps> = ({
+  updateMessages,
+  scrollToBottom
+}) => {
   const [message, setMessage] = useState("");
 
-  const handleSubmitMessage = async event => {
+  // needs await because setStates are async and we want updated state before scroll
+  const handleSubmitMessage = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (message) {
-      await updateMessages(message);
+      updateMessages(message);
       scrollToBottom();
     }
     setMessage("");
   };
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
 
@@ -60,10 +68,4 @@ export const ChatInput = ({ updateMessages, scrollToBottom }) => {
     </InputContainer>
   );
 };
-
-ChatInput.propTypes = {
-  updateMessages: PropTypes.func,
-  scrollToBottom: PropTypes.func
-};
-
 export default ChatInput;

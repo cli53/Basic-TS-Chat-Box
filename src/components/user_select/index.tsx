@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
 import { map } from "lodash";
 
 const Select = styled.select`
@@ -14,7 +13,23 @@ const Select = styled.select`
   margin-top: 1rem;
 `;
 
-const UserSelect = ({ users, handleChange, currentUser }) => {
+type UserSelectProps = {
+  users: string[];
+  handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  currentUser: number;
+};
+const UserSelect: React.FC<UserSelectProps> = ({
+  users,
+  handleChange,
+  currentUser
+}) => {
+  const userOptions = map(users, (val, idx) => {
+    return (
+      <option key={idx} value={val}>
+        {val}
+      </option>
+    );
+  });
   return (
     <section>
       <label htmlFor="chatUsers">Choose your user:</label>
@@ -23,22 +38,10 @@ const UserSelect = ({ users, handleChange, currentUser }) => {
         onChange={e => handleChange(e)}
         value={currentUser}
       >
-        {map(users, (val, idx) => {
-          return (
-            <option key={idx} value={val}>
-              {val}
-            </option>
-          );
-        })}
+        {userOptions}
       </Select>
     </section>
   );
-};
-
-UserSelect.propTypes = {
-  users: PropTypes.array,
-  currentUser: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  handleChange: PropTypes.func
 };
 
 export default UserSelect;

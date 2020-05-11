@@ -1,54 +1,13 @@
 import { forEach, set, map, first, last, upperCase } from "lodash";
-
-interface ObjectLiteral {
-  [key: string]: any;
-}
-
-interface Message {
-  id: number;
-  text: string;
-}
-
-interface User {
-  id: number;
-  user_name: string;
-  display_name: string;
-}
-
-interface FormatMessages {
-  display_name: string;
-  messageId: number;
-  text: string;
-  time: string;
-  userId: number;
-  avatar: string;
-}
-
-interface Payload {
-  type: string;
-  user: User | ObjectLiteral;
-  message: Message | ObjectLiteral;
-}
-
-interface Messages {
-  delta: number;
-  payload: Payload;
-}
-
-interface DeleteIds {
-  [key: number]: string;
-}
-
-interface MessageIds {
-  [key: number]: number;
-}
-
-interface MessageLists {
-  [key: number]: Messages;
-}
-interface UserIds {
-  [key: number]: User;
-}
+import {
+  FormatMessages,
+  Messages,
+  ObjectLiteral,
+  DeleteIds,
+  MessageIds,
+  MessageLists,
+  UserIds
+} from "../type";
 
 const COLLECTION: ObjectLiteral = {
   deletedIds: {} as DeleteIds,
@@ -165,6 +124,17 @@ const performUpdates = (obj: Messages, idx: number): void => {
   }
 };
 
+const getMessageWithFormatText = (
+  type: string,
+  renderedMessage: FormatMessages
+): FormatMessages => {
+  const formattedText = `${renderedMessage.display_name} has ${
+    type === "connect" ? "joined" : "left"
+  } the chat`;
+  renderedMessage.text = formattedText;
+  return renderedMessage;
+};
+
 const formatMessages = (filteredMessages: Messages[]): FormatMessages[] => {
   return map(
     filteredMessages,
@@ -188,15 +158,13 @@ const formatMessages = (filteredMessages: Messages[]): FormatMessages[] => {
         userId,
         avatar: initials
       };
-      if (type === messageTypes.CONNECT) {
-        renderedMessage.text = `${display_name} has joined the chat`;
-        return renderedMessage;
-      } else if (type === messageTypes.DISCONNECT) {
-        renderedMessage.text = `${display_name} has left the chat`;
-        return renderedMessage;
-      }
-      // MessageTypes.MESSAGE || messageTypes.UPDATE
-      return renderedMessage;
+      const isConnect = type === messageTypes.CONNECT;
+      const isDisconnect = type === messageTypes.DISCONNECT;
+      return isConnect
+        ? getMessageWithFormatText(messageTypes.CONNECT, renderedMessage)
+        : isDisconnect
+        ? getMessageWithFormatText(messageTypes.DISCONNECT, renderedMessage)
+        : renderedMessage;
     }
   );
 };

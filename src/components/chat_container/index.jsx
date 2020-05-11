@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useFetch } from "../../hooks";
 import { toNumber } from "lodash";
-import ChatMessages from "../chat_messages";
+import ChatMessages from "../chat_messages/index.tsx";
 import ChatInput from "../chat_input";
 import LoadingIndicator from "../chat_loading";
 import UserSelect from "../user_select";
