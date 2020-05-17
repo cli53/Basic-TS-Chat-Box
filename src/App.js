@@ -16,10 +16,9 @@ const ModalRoot = styled.div`
 `;
 
 // TODO:
-// Implement Typescript
-// fix up collection ts
-// add ts to react components
-// Loading fonts
+// React Router for login page
+// firebase for data storage and auth
+// fix ts for themes
 // sign in form,
 // delete - delete for the user and option for the other person
 // attachment,
@@ -27,6 +26,7 @@ const ModalRoot = styled.div`
 // abilitychange background
 // adding design icons: iconmonstr and undraw, pexels, and tinypng
 // reduce to chatbox consumed by another app
+// Loading fonts
 
 const AppHeader = styled.h1`
   color: ${({ theme }) => theme.softBlack};

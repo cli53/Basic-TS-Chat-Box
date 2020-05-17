@@ -4,7 +4,7 @@ import { useFetch } from "../../hooks";
 import { toNumber } from "lodash";
 import ChatMessages from "../chat_messages/index";
 import ChatInput from "../chat_input";
-import LoadingIndicator from "../chat_loading";
+import LoadingIndicator from "../chat_loading/index";
 import UserSelect from "../user_select";
 import { interleavingMessages, createMessage } from "../utils";
 
