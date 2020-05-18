@@ -1,4 +1,5 @@
 import { forEach, set, map, first, last, upperCase } from "lodash";
+
 import {
   FormatMessages,
   Messages,
@@ -9,7 +10,14 @@ import {
   UserIds
 } from "../type";
 
-const COLLECTION: ObjectLiteral = {
+type Collection = {
+  deletedIds: DeleteIds;
+  messageIds: MessageIds;
+  messageList: MessageLists;
+  userIds: UserIds;
+};
+
+const COLLECTION: Collection = {
   deletedIds: {} as DeleteIds,
   messageIds: {} as MessageIds,
   messageList: {} as MessageLists,
@@ -54,7 +62,7 @@ export const getTimeStamp = (delta: number): string => {
  * @param * {int} v
  * @param * {array} collection
  */
-const storeId = (k: any, v: any, collection: any[]): void => {
+const storeId = (k: any, v: any, collection: ObjectLiteral): void => {
   set(collection, k, v);
 };
 

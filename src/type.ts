@@ -45,5 +45,5 @@ export interface MessageLists {
   [key: number]: Messages;
 }
 export interface UserIds {
-  [key: number]: User;
+  [key: string]: User;
 }
