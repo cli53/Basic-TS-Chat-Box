@@ -29,24 +29,24 @@ export const useFetch = (url: string) => {
  * @param {String} id
  * @returns {HTMLElement}
  */
-function createRootElement(id: string) {
+const createRootElement = (id: string) => {
   const rootContainer = document.createElement("div");
   rootContainer.setAttribute("id", id);
   return rootContainer;
-}
+};
 
 /**
  * Appends element as last child of body.
  * @param {HTMLElement} rootElem
  */
-function addRootElement(rootElem: Element) {
+const addRootElement = (rootElem: Element) => {
   if (document.body.lastElementChild) {
     document.body.insertBefore(
       rootElem,
       document.body.lastElementChild.nextElementSibling
     );
   }
-}
+};
 
 /**
  * Hook to create a React Portal.
@@ -102,17 +102,22 @@ export const usePortal = (children: React.ReactNode, id: string) => {
    *   ever run once.
    * @link https://reactjs.org/docs/hooks-faq.html#how-to-create-expensive-objects-lazily
    */
-  function getRootElem() {
+  const getRootElem = () => {
     if (!rootElemRef.current) {
       rootElemRef.current = document.createElement("div");
     }
     return rootElemRef.current;
-  }
+  };
 
   const domContainer = getRootElem();
   return createPortal(children, domContainer);
 };
 
+/**
+ * Sets theme and stores theme in local storage
+ * @param {Function} setTheme
+ * @param {String} mode aka theme
+ */
 const setMode = (setTheme: (mode: string) => void, mode: string) => {
   setTheme(mode);
   window.localStorage.setItem("theme", mode);
@@ -125,6 +130,7 @@ export const useDarkMode = () => {
 
   useEffect(() => {
     // sets the default theme accordingly to the OS color scheme
+    // Checks local theme so it doesn't override local storage if the user has already set theme
     if (
       !localTheme &&
       window.matchMedia &&

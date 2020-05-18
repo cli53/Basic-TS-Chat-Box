@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useFetch } from "../../hooks";
-import { toNumber } from "lodash";
 import ChatMessages from "../chat_messages/index";
 import ChatInput from "../chat_input";
 import LoadingIndicator from "../chat_loading";
