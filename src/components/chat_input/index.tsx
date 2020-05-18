@@ -40,10 +40,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   const [message, setMessage] = useState("");
 
   // needs await because setStates are async and we want updated state before scroll
-  const handleSubmitMessage = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitMessage = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     if (message) {
-      updateMessages(message);
+      await updateMessages(message);
       scrollToBottom();
     }
     setMessage("");

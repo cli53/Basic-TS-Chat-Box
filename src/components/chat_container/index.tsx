@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useFetch } from "../../hooks";
 import ChatMessages from "../chat_messages/index";
 import ChatInput from "../chat_input";
-import LoadingIndicator from "../chat_loading";
 import UserSelect from "../user_select";
 import { interleavingMessages, createMessage } from "../utils";
-
+import { Messages } from "../../type";
 const ChatTitle = styled.h1`
   font-size: 1.5em;
   text-align: center;
+  color: ${({ theme }) => theme.softBlack};
 `;
 
 const ScrollBottomButton = styled.button`
@@ -29,15 +28,19 @@ const Container = styled.div`
 `;
 
 type ChatContainerProps = {
-  toggleModal: (bool: boolean) => void;
+  messages: Messages[];
+  setMessage: React.Dispatch<
+    React.SetStateAction<{
+      data: Messages[];
+      isLoading: boolean;
+    }>
+  >;
 };
-const ChatContainer: React.FC<ChatContainerProps> = ({ toggleModal }) => {
-  const url = "https://api.jsonbin.io/b/5e9a6b452940c704e1da618a";
-  const {
-    state: { data: messages, isLoading },
-    setState: setMessage
-  } = useFetch(url);
 
+const ChatContainer: React.FC<ChatContainerProps> = ({
+  messages,
+  setMessage
+}) => {
   const { formattedMessages, userIds: users } = interleavingMessages(messages);
 
   const [currentUser, setCurrentUser] = useState(users[0]);
@@ -60,9 +63,6 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ toggleModal }) => {
       data: [...prev.data, newMessage]
     }));
   };
-
-  if (isLoading) return <LoadingIndicator />;
-
   return (
     <Container>
       <UserSelect
@@ -70,7 +70,7 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ toggleModal }) => {
         handleChange={handleChange}
         currentUser={currentUser}
       />
-      <button onClick={() => toggleModal(false)}>Close</button>
+
       <ChatTitle>Stuck at Home Group Chat</ChatTitle>
       <ScrollBottomButton onClick={scrollToBottom}>
         Click to Scroll Bottom

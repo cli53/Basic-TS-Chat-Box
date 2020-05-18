@@ -25,14 +25,18 @@ const ChatBubble = styled.div<{
   border-radius: 2%;
   background-color: ${({ theme }) => theme.accentBgc};
   color: ${({ theme }) => theme.color};
+  word-break: break-word;
 `;
 
 const Avatar = styled.div<{ alt?: string; className?: string }>`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   border-radius: 50%;
   height: 50px;
   width: 50px;
   font-weight: 700;
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin: 1rem 1rem;
   background-color: aquamarine;
   color: #043623;

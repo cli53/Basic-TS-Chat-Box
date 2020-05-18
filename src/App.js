@@ -8,7 +8,7 @@ import { GlobalStyle } from "./styles/global";
 import styled, { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "./styles/theme";
 import ThemeButton from "./components/theme_button";
-import { useDarkMode } from "./hooks";
+import { useDarkMode, useFetch } from "./hooks";
 
 const ModalRoot = styled.div`
   position: relative;
@@ -36,6 +36,11 @@ function App() {
   const [theme, toggleTheme] = useDarkMode();
   const themeMode = theme === "light" ? lightTheme : darkTheme;
   const [isModalOpen, toggleModal] = useState(false);
+  const url = "https://api.jsonbin.io/b/5e9a6b452940c704e1da618a";
+  const {
+    state: { data: messages, isLoading },
+    setState: setMessage
+  } = useFetch(url);
   return (
     <ThemeProvider theme={themeMode}>
       <GlobalStyle />
@@ -44,8 +49,12 @@ function App() {
       <ThemeButton toggleTheme={toggleTheme} theme={theme} />
       <ModalButton toggleModal={toggleModal} />
       {isModalOpen ? (
-        <Modal>
-          <ChatContainer toggleModal={toggleModal} />
+        <Modal toggleModal={toggleModal} isLoading={isLoading}>
+          <ChatContainer
+            toggleModal={toggleModal}
+            messages={messages}
+            setMessage={setMessage}
+          />
         </Modal>
       ) : null}
     </ThemeProvider>

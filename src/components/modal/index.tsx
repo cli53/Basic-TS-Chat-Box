@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { usePortal } from "../../hooks";
+import LoadingIndicator from "../chat_loading";
 
 const ModalOverlay = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
@@ -25,13 +26,31 @@ const ModalContainer = styled.section`
   padding: 1rem;
 `;
 
+const CloseButton = styled.button`
+  position: fixed;
+  height: 2rem;
+  width: 2rem;
+  margin-left: 13.5rem;
+`;
+
 type ModalProps = {
   children: React.ReactNode;
+  toggleModal: (bool: boolean) => void;
+  isLoading: boolean;
 };
-const Modal: React.FC<ModalProps> = ({ children }) => {
+const Modal: React.FC<ModalProps> = ({ children, toggleModal, isLoading }) => {
   const modalEle = (
     <ModalOverlay>
-      <ModalContainer>{children}</ModalContainer>
+      <ModalContainer>
+        {isLoading ? (
+          <LoadingIndicator />
+        ) : (
+          <>
+            <CloseButton onClick={() => toggleModal(false)}>X</CloseButton>
+            {children}
+          </>
+        )}
+      </ModalContainer>
     </ModalOverlay>
   );
 
