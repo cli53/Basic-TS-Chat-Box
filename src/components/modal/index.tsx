@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { usePortal } from "../../hooks";
 import LoadingIndicator from "../chat_loading";
+import { device } from "../../styles/sizes";
 
 const ModalOverlay = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
@@ -24,6 +25,12 @@ const ModalContainer = styled.section`
   border-radius: 3px;
   box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
   padding: 1rem;
+
+  @media ${device.tablet} {
+    width: 100vw;
+    height: 97vh;
+    margin: 0;
+  }
 `;
 
 const CloseButton = styled.button`
@@ -31,6 +38,10 @@ const CloseButton = styled.button`
   height: 2rem;
   width: 2rem;
   margin-left: 13.5rem;
+  @media ${device.tablet} {
+    position: relative;
+    margin: 0;
+  }
 `;
 
 type ModalProps = {
