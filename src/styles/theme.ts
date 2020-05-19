@@ -6,7 +6,9 @@ export const lightTheme = {
   accentBgc: colors.steelBlue,
   accentColor: colors.honeyDew,
   validationColor: colors.imperialRed,
-  softBlack: colors.softBlack
+  softBlack: colors.softBlack,
+  white: colors.white,
+  headersColor: colors.softBlack
 };
 
 export const darkTheme = {
@@ -15,5 +17,7 @@ export const darkTheme = {
   accentColor: colors.honeyDew,
   color: colors.honeyDew,
   validationColor: colors.imperialRed,
-  softBlack: colors.softBlack
+  softBlack: colors.softBlack,
+  white: colors.white,
+  headersColor: colors.white
 };

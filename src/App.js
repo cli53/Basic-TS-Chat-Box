@@ -29,7 +29,7 @@ const ModalRoot = styled.div`
 // reduce to chatbox consumed by another app
 
 const AppHeader = styled.h1`
-  color: ${({ theme }) => theme.softBlack};
+  line-height: 1.6;
 `;
 
 function App() {
