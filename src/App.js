@@ -16,20 +16,17 @@ const ModalRoot = styled.div`
 `;
 
 // TODO:
-// Implement Typescript
-// fix up collection ts
-// add ts to react components
 // Loading fonts
 // sign in form,
 // delete - delete for the user and option for the other person
 // attachment,
 // Voice message,
-// abilitychange background
+// add icon and illustration
 // adding design icons: iconmonstr and undraw, pexels, and tinypng
-// reduce to chatbox consumed by another app
+// reduce to chatbox consumed by widget
 
 const AppHeader = styled.h1`
-  color: ${({ theme }) => theme.softBlack};
+  line-height: 1.6;
 `;
 
 function App() {

@@ -13,10 +13,6 @@ const Select = styled.select`
   margin-top: 1rem;
 `;
 
-const Label = styled.label`
-  color: ${({ theme }) => theme.softBlack};
-`;
-
 type UserSelectProps = {
   users: string[];
   handleChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -36,7 +32,7 @@ const UserSelect: React.FC<UserSelectProps> = ({
   });
   return (
     <section>
-      <Label htmlFor="chatUsers">Choose your user:</Label>
+      <label>Choose your user:</label>
       <Select
         id="chatUsers"
         onChange={e => handleChange(e)}

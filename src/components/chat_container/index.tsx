@@ -5,10 +5,10 @@ import ChatInput from "../chat_input";
 import UserSelect from "../user_select";
 import { interleavingMessages, createMessage } from "../utils";
 import { Messages } from "../../type";
+
 const ChatTitle = styled.h1`
   font-size: 1.5em;
   text-align: center;
-  color: ${({ theme }) => theme.softBlack};
 `;
 
 const ScrollBottomButton = styled.button`

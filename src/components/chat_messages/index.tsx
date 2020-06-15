@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-import { map, isEmpty } from "lodash";
+import { map, isEmpty, toString } from "lodash";
 import { FormatMessages } from "../../type";
 
 const DisplayName = styled.header<{ children?: string | Element }>`
@@ -60,7 +60,7 @@ const ChatMessages: FC<ChatMessagesProps> = ({ messages, currentUser }) => {
     const chatRows = map(
       messages,
       ({ userId, avatar, display_name, text, time }, key) => {
-        const isUser = userId === currentUser;
+        const isUser = toString(userId) === currentUser;
         return (
           <ChatRow className={`chat-row`} key={key} isUser={isUser}>
             <Avatar alt="sender avatar" className="avatar">
