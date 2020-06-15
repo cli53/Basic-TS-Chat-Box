@@ -1,3 +1,9 @@
+Chat Box App with TS and Styled Components
+
+- Clientside only (messages will not persist)
+- Responsive
+- Dark Mode
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
