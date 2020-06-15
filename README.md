@@ -3,6 +3,9 @@ Chat Box App with TS and Styled Components
 - Clientside only (messages will not persist)
 - Responsive
 - Dark Mode
+- Modal Support
+- Accessible
+- Fun to talk chat with yourself or type nonsense
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
