@@ -22,6 +22,7 @@ export const GlobalStyle = createGlobalStyle`
       height: 3rem;
       width: 9rem;
       font-size: inherit;
+      border: none;
     }
 
 
