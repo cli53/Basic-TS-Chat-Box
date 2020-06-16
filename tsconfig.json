@@ -14,11 +14,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "sourceMap": true, // allow sourcemap support
-    "noEmit": true,
     "jsx": "react", // use typescript to transpile jsx to js
     "rootDir": "src",
     "outDir": "build",
     "noImplicitAny": true
   },
-  "include": ["src"] // Read in any files it understands in the src directory
+  "include": ["src"], // Read in any files it understands in the src directory,
+  "exclude": [
+    "node_modules",
+    "**/*.test.js"
+]
 }
