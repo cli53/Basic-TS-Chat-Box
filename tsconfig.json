@@ -1,27 +1,34 @@
 {
   "compilerOptions": {
-    "target": "es5", // Translate newer JavaScript constructs down to an older version like ECMAScript 5
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true, // allow a partial TypeScript and JavaScript codebase
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "strictNullChecks": true, // enable strict null checks as a best practice
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext", // specify module code generation
+    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "sourceMap": true, // allow sourcemap support
-    "jsx": "react", // use typescript to transpile jsx to js
+    "sourceMap": true,
+    "jsx": "react",
     "rootDir": "src",
     "outDir": "build",
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "noEmit": true
   },
-  "include": ["src"], // Read in any files it understands in the src directory,
+  "include": [
+    "src"
+  ],
   "exclude": [
     "node_modules",
     "**/*.test.js"
-]
+  ]
 }
