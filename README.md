@@ -9,7 +9,7 @@ Chat Box App with TS and Styled Components
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Try it out here: https://app.netlify.com/sites/cranky-bose-d9bebd/overview
+Try it out here: https://cranky-bose-d9bebd.netlify.app/
 
 ## Available Scripts
 
